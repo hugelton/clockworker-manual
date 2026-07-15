@@ -17,6 +17,11 @@
 - `panel.svg`
   - 本体パネルSVG。`data-name` で各部品を識別します。
   - 主要な `data-name`: `oled`, `rotaryknob`, `playbutton`, `stopbutton`, `tapbutton`, `soucebutton`, `portsbutton`, `configbutton`, `inClock`, `inAction`, `outA`, `outB`, `outC`, `outD`, `midi-in`, `midi-out`, `USB`。
+  - `<svg>` 自身に `width`/`height` 属性はなく `viewBox` のみ。`.panel-art svg { width:100%; height:auto; }` にすると、iOS Safariがviewboxからintrinsic比率を推測できず歪むことがあるため、`height:100%` にして親 `.panel-art`(`aspect-ratio` 指定済み)に委ねている。ここは変更しないこと。
+
+## アイコン画像アセット (未コミット)
+
+`app.js` の `drawImage()`/`images` は `../icons/${name}.png` から約40個のOLEDアイコン(`header_tempo`, `source_internal`, `port_1` など)を読み込みますが、`icons/` ディレクトリはまだリポジトリにコミットされていません(ユーザーが後日追加予定)。追加されるまで、これらのアイコンが必要な画面(HOME、SOURCE、PORT、CONFIG、SWING)は一部要素が欠けたまま表示されます。これはバグではなく既知の未完了タスクです。
 
 ## Current camera behavior
 
@@ -41,6 +46,18 @@
 
 この方針により、UI章やMenu構成の説明が続いても画面が `oled`/`rotary` に張り付いたままにならないようにしています。
 
+## パネル表示/非表示 (data-panel)
+
+`section.manual-step` に `data-panel="hidden"` を付けると、`.panel-reader` に `is-collapsed` クラスが付いて高さ0まで折りたたまれ、本文(`.manual-copy`)がその分フルサイズで表示されます(`activateStep()` 内で切り替え)。Safety、Specifications、Quick Start、Sync Compatibility、Performance、FAQなど「パネルを見せる必要がない」章に付与済みです。新しい章を足すときも、パネル部位に触れない段落にはこれを付けること。
+
+## 多言語対応 (EN/JA)
+
+- ヘッダー右上の `#lang-button` で日本語/英語を切り替えます。状態は `localStorage("cw-lang")` に保存。
+- 翻訳したい要素には日本語テキストをそのまま書いた上で `data-en="English text"` を追加するだけでよい。`app.js` の `applyLang()` が `[data-en]` を全走査し、初回に `data-ja` へ元テキストを退避してから言語に応じて `textContent` を差し替えます。入れ子のHTMLは使わず、必ずプレーンテキストの要素(`h2`, `p`, `li`, `a` など)に付けること。
+- `eyebrow`(章ラベル、例: "Safety", "MIDI")と `toc-group` 見出しは元から英語表記なので翻訳不要。
+- パネル下の部位名(`#panel-detail`)は `focusDetails` オブジェクト(`{ja, en}`)から `setScene()`/`applyLang()` が都度セットするので、HTML側の `data-en` は初期表示用のフォールバックに過ぎない。
+- OLED上の `#screen-name`(HOME/SOURCE/PORT/CONFIG/SWINGなど)は実機表示に合わせて常に英語表記のままでよい(翻訳しない)。
+
 ## Scroll and hash behavior
 
 - 本文スクロールは `.manual-copy` の内部スクロールです。
@@ -54,7 +71,7 @@
 現在値:
 
 ```text
-20260715n
+20260715o
 ```
 
 ## Verification
@@ -80,6 +97,10 @@ git diff --check -- index.html app.js style.css panel.svg agent.md
 - OLEDページとRotaryページでカメラ位置が大きく変わらず、ハイライトだけが変わる。
 - ロータリーは自転する。公転して見える場合は `preparePanelSvg()` の `transformBox` / `transformOrigin` と、SVG側の対象グループを確認する。
 - OLED文字がアンチエイリアスで滲まない。
+- 375-430px程度の狭い画面幅でパネルSVGの縦横比が崩れない(iOS Safari実機 or レスポンシブモードで必ず確認)。
+- Safety/Specifications/Quick Start/Sync Compatibility/Performance/FAQ章ではパネル領域が折りたたまれ、本文がフル表示になる。
+- ヘッダーの `EN`/`JA` ボタンで表示言語が切り替わり、リロード後も維持される(localStorage)。
+- OSの配色設定をダークにした状態でも、文字とパネル領域の配色が破綻しない。
 
 ## Design direction
 

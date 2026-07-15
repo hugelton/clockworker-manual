@@ -4,22 +4,50 @@
   --panel-padding-y: 10px;
   --panel-meta-height: 34px;
   --panel-svg-height: calc(var(--panel-area-height) - var(--panel-meta-height) - 20px);
+  --bg: #f5f5f7;
+  --bg-header: rgba(245, 245, 247, .82);
+  --fg: #111;
+  --fg-muted: #777;
+  --fg-faint: #999;
+  --border: rgba(0, 0, 0, .08);
+  --border-strong: rgba(0, 0, 0, .12);
+  --surface: rgba(255, 255, 255, .92);
+  --hover: rgba(0, 0, 0, .05);
+  --note-border: #b5790a;
+  --note-bg: rgba(181, 121, 10, .1);
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #111;
-  background: #f5f5f7;
-  color-scheme: light;
+  color: var(--fg);
+  background: var(--bg);
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #000;
+    --bg-header: rgba(0, 0, 0, .78);
+    --fg: #f2f2f2;
+    --fg-muted: #9a9a9a;
+    --fg-faint: #7a7a7a;
+    --border: rgba(255, 255, 255, .12);
+    --border-strong: rgba(255, 255, 255, .18);
+    --surface: rgba(28, 28, 30, .88);
+    --hover: rgba(255, 255, 255, .08);
+    --note-border: #d99a2b;
+    --note-bg: rgba(217, 154, 43, .14);
+  }
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body {
   display: grid;
-  grid-template-rows: var(--header-height) var(--panel-area-height) minmax(0, 1fr);
+  grid-template-rows: var(--header-height) auto minmax(0, 1fr);
   height: 100svh;
   min-width: 320px;
   margin: 0;
   overflow: hidden;
-  background: #f5f5f7;
+  background: var(--bg);
+  color: var(--fg);
   letter-spacing: 0;
 }
 
@@ -32,14 +60,15 @@ button { font: inherit; }
   align-items: center;
   height: var(--header-height);
   padding: 0 18px;
-  border-bottom: 1px solid rgba(0, 0, 0, .08);
-  background: rgba(245, 245, 247, .82);
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-header);
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
 
 .site-header h1 {
   margin: 0;
+  color: var(--fg);
   font-size: 17px;
   font-weight: 500;
   text-align: center;
@@ -65,10 +94,26 @@ button { font: inherit; }
   height: 1.5px;
   margin: 2px 0;
   border-radius: 2px;
-  background: #111;
+  background: var(--fg);
 }
 
-.icon-button:hover { background: rgba(0, 0, 0, .05); }
+.icon-button:hover { background: var(--hover); }
+
+.lang-button {
+  justify-self: end;
+  width: 38px;
+  height: 30px;
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--fg);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+
+.lang-button:hover { background: var(--hover); }
 
 .toc {
   position: fixed;
@@ -86,23 +131,23 @@ button { font: inherit; }
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   padding: 22px;
-  background: rgba(255, 255, 255, .92);
+  background: var(--surface);
   -webkit-backdrop-filter: blur(22px);
   backdrop-filter: blur(22px);
-  border-right: 1px solid rgba(0, 0, 0, .08);
+  border-right: 1px solid var(--border);
   box-shadow: 18px 0 40px rgba(0, 0, 0, .12);
 }
 
 .toc-panel > p {
   margin: 0 0 16px;
-  color: #777;
+  color: var(--fg-muted);
   font-size: 12px;
   font-weight: 500;
 }
 
 .toc-panel .toc-group {
   margin: 20px 0 2px;
-  color: #999;
+  color: var(--fg-faint);
   font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
@@ -116,10 +161,10 @@ button { font: inherit; }
 .toc-panel a {
   display: block;
   padding: 10px 0;
-  color: #111;
+  color: var(--fg);
   font-size: 14px;
   text-decoration: none;
-  border-bottom: 1px solid rgba(0, 0, 0, .07);
+  border-bottom: 1px solid var(--border);
 }
 
 .toc-backdrop {
@@ -139,10 +184,20 @@ main {
   align-content: start;
   justify-items: center;
   gap: 4px;
+  height: var(--panel-area-height);
   padding: var(--panel-padding-y) 0;
   overflow: hidden;
-  border-bottom: 1px solid rgba(0, 0, 0, .08);
-  background: #f5f5f7;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  transition: height 420ms cubic-bezier(.2, .8, .2, 1), padding 420ms cubic-bezier(.2, .8, .2, 1), opacity 260ms ease, border-color 260ms ease;
+}
+
+.panel-reader.is-collapsed {
+  height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  border-bottom-color: transparent;
 }
 
 .panel-stage {
@@ -166,7 +221,7 @@ main {
 .panel-art svg {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .panel-oled {
@@ -192,7 +247,7 @@ main {
 
 #screen-name {
   margin: 0;
-  color: #777;
+  color: var(--fg-muted);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: .08em;
@@ -202,7 +257,7 @@ main {
 #panel-detail {
   min-height: 1.4em;
   margin: 0;
-  color: #111;
+  color: var(--fg);
   font-size: 13px;
   text-align: center;
 }
@@ -217,7 +272,7 @@ main {
   margin: 0;
   padding: 0 max(18px, calc((100vw - 680px) / 2)) 72px;
   overflow-y: auto;
-  background: #f5f5f7;
+  background: var(--bg);
   scroll-behavior: smooth;
 }
 
@@ -225,7 +280,7 @@ main {
   scroll-margin-top: 18px;
   min-height: 52svh;
   padding: 26px 0 40px;
-  border-top: 1px solid rgba(0, 0, 0, .08);
+  border-top: 1px solid var(--border);
   opacity: .28;
   transition: opacity 220ms ease;
 }
@@ -234,6 +289,7 @@ main {
 
 .manual-step h2 {
   margin: 0 0 12px;
+  color: var(--fg);
   font-size: clamp(30px, 7vw, 60px);
   line-height: .98;
   font-weight: 500;
@@ -241,17 +297,48 @@ main {
 
 .manual-step p {
   margin: 0;
-  color: #333;
+  color: var(--fg);
+  opacity: .82;
   font-size: clamp(17px, 2.6vw, 22px);
   line-height: 1.55;
 }
 
+.manual-step p + p {
+  margin-top: 10px;
+}
+
+.manual-step ul,
+.manual-step ol {
+  margin: 0;
+  padding-left: 1.2em;
+  color: var(--fg);
+  opacity: .82;
+  font-size: clamp(17px, 2.6vw, 22px);
+  line-height: 1.55;
+}
+
+.manual-step li + li {
+  margin-top: 4px;
+}
+
 .manual-step .eyebrow {
   margin: 0 0 10px;
-  color: #777;
+  color: var(--fg-muted);
   font-size: 13px;
   font-weight: 500;
   line-height: 1.2;
+}
+
+.manual-step .callout {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-left: 3px solid var(--note-border);
+  border-radius: 4px;
+  background: var(--note-bg);
+  color: var(--fg);
+  opacity: .92;
+  font-size: clamp(15px, 2.3vw, 19px);
+  line-height: 1.5;
 }
 
 @media (min-width: 760px) {

@@ -7,9 +7,11 @@ const panelDetail = document.querySelector("#panel-detail");
 const panelStage = document.querySelector("#panel-stage");
 const panelSvgHost = document.querySelector("#panel-svg");
 const menuButton = document.querySelector("#menu-button");
+const langButton = document.querySelector("#lang-button");
 const toc = document.querySelector("#toc");
 const tocBackdrop = document.querySelector("#toc-backdrop");
 const manualCopy = document.querySelector(".manual-copy");
+const panelReader = document.querySelector(".panel-reader");
 ctx.imageSmoothingEnabled = false;
 const clockSource = document.createElement("canvas");
 const clockSourceCtx = clockSource.getContext("2d", { willReadFrequently: true });
@@ -354,14 +356,21 @@ function action(name) {
 }
 
 const focusDetails = {
-  overview: "各部名称",
-  oled: "OLED",
-  rotary: "Encoder",
-  transport: "START / STOP / TAP",
-  menu: "SOURCE / PORT / CONFIG",
-  clock: "Clock In / Action In / Clock Out A-D",
-  midi: "TRS MIDI / USB-C",
+  overview: { ja: "各部名称", en: "Part Names" },
+  oled: { ja: "OLED", en: "OLED" },
+  rotary: { ja: "Encoder", en: "Encoder" },
+  transport: { ja: "START / STOP / TAP", en: "START / STOP / TAP" },
+  menu: { ja: "SOURCE / PORT / CONFIG", en: "SOURCE / PORT / CONFIG" },
+  clock: { ja: "Clock In / Action In / Clock Out A-D", en: "Clock In / Action In / Clock Out A-D" },
+  midi: { ja: "TRS MIDI / USB-C", en: "TRS MIDI / USB-C" },
 };
+
+const ariaLabels = {
+  ja: { open: "目次を開く", close: "目次を閉じる", lang: "英語に切り替え" },
+  en: { open: "Open contents", close: "Close contents", lang: "Switch to Japanese" },
+};
+
+let lang = localStorage.getItem("cw-lang") === "en" ? "en" : "ja";
 
 const panelViewBoxWidth = 171.92;
 const oledRotaryBlockWidth = 121.58;
@@ -392,8 +401,26 @@ function openToc(open) {
   toc.classList.toggle("is-open", open);
   tocBackdrop.hidden = !open;
   menuButton.setAttribute("aria-expanded", String(open));
-  menuButton.setAttribute("aria-label", open ? "目次を閉じる" : "目次を開く");
+  menuButton.setAttribute("aria-label", open ? ariaLabels[lang].close : ariaLabels[lang].open);
 }
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  langButton.textContent = lang === "en" ? "JA" : "EN";
+  langButton.setAttribute("aria-label", ariaLabels[lang].lang);
+  menuButton.setAttribute("aria-label", toc.classList.contains("is-open") ? ariaLabels[lang].close : ariaLabels[lang].open);
+  document.querySelectorAll("[data-en]").forEach((el) => {
+    if (el.dataset.ja === undefined) el.dataset.ja = el.textContent;
+    el.textContent = lang === "en" ? el.dataset.en : el.dataset.ja;
+  });
+  panelDetail.textContent = (focusDetails[state.readerFocus] || focusDetails.overview)[lang];
+}
+
+langButton.addEventListener("click", () => {
+  lang = lang === "en" ? "ja" : "en";
+  localStorage.setItem("cw-lang", lang);
+  applyLang();
+});
 
 function scenePreset(screen) {
   state.screen = screen;
@@ -428,7 +455,7 @@ function setScene(scene, focus) {
   panelStage.style.setProperty("--panel-pan-x", `${panX}px`);
   panelStage.style.setProperty("--panel-pan-y", `${panY}px`);
   panelStage.style.setProperty("--panel-scale", scale);
-  panelDetail.textContent = focusDetails[focus] || "各部名称";
+  panelDetail.textContent = (focusDetails[focus] || focusDetails.overview)[lang];
   updateSvgFocus(focus);
 }
 
@@ -477,7 +504,7 @@ function preparePanelSvg() {
 
 async function loadPanelSvg() {
   try {
-    const response = await fetch("panel.svg?v=20260715n");
+    const response = await fetch("panel.svg?v=20260715o");
     panelSvgHost.innerHTML = await response.text();
     preparePanelSvg();
   } catch {
@@ -512,6 +539,7 @@ let sceneSyncQueued = false;
 function activateStep(step) {
   steps.forEach((item) => item.classList.toggle("is-active", item === step));
   setScene(step.dataset.scene || "home", step.dataset.focus || "overview");
+  panelReader.classList.toggle("is-collapsed", step.dataset.panel === "hidden");
 }
 
 function syncSceneFromScroll() {
@@ -569,6 +597,7 @@ manualCopy.addEventListener("scroll", queueSceneSync, { passive: true });
 window.addEventListener("resize", queueSceneSync);
 window.addEventListener("hashchange", () => scrollToHashStep("auto"));
 loadPanelSvg();
+applyLang();
 if (!scrollToHashStep("auto")) {
   setScene("home", "overview");
   queueSceneSync();
