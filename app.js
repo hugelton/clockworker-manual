@@ -2,13 +2,13 @@
 
 const canvas = document.querySelector("#oled-canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
-const screenName = document.querySelector("#screen-name");
-const panelDetail = document.querySelector("#panel-detail");
 const panelStage = document.querySelector("#panel-stage");
 const panelSvgHost = document.querySelector("#panel-svg");
 const menuButton = document.querySelector("#menu-button");
+const langButton = document.querySelector("#lang-button");
 const toc = document.querySelector("#toc");
 const tocBackdrop = document.querySelector("#toc-backdrop");
+const panelMarkers = [...document.querySelectorAll("[data-marker-focus]")];
 ctx.imageSmoothingEnabled = false;
 const clockSource = document.createElement("canvas");
 const clockSourceCtx = clockSource.getContext("2d", { willReadFrequently: true });
@@ -60,7 +60,7 @@ const state = {
   knobTurn: 0,
   readerScene: "home",
   readerFocus: "overview",
-  demoBpmAt: 0,
+  tempoDemo: false,
 };
 
 const sources = [
@@ -146,10 +146,11 @@ function startScroll(kind, from, to, direction) {
 
 function drawHome(now) {
   header("header_tempo");
+  const displayBpm = state.tempoDemo ? 120 + Math.floor((now / 680) % 5) : state.bpm;
   const elapsed = now - state.bpmAnimationAt;
   const roll = elapsed >= 240 ? 1 : elapsed / 240;
   const previous = state.previousBpm.toFixed(1).padStart(5, " ");
-  const current = state.bpm.toFixed(1).padStart(5, " ");
+  const current = displayBpm.toFixed(1).padStart(5, " ");
   for (let index = 0; index < current.length; index++) {
     const x = 18 + index * 13;
     if (previous[index] !== current[index] && roll < 1 && current[index] !== ".") {
@@ -352,15 +353,24 @@ function action(name) {
   else if (name === "turn-down") turn(-1);
 }
 
-const focusDetails = {
-  overview: "全体",
-  oled: "OLED",
-  rotary: "ロータリーエンコーダ",
-  transport: "START / STOP / TAP",
-  menu: "SOURCE / PORT / CONFIG",
-  clock: "Clock In / Action In / Clock Out A–D",
-  midi: "TRS MIDI / USB-C",
+const ariaLabels = {
+  ja: {
+    open: "目次を開く",
+    close: "目次を閉じる",
+    lang: "英語に切り替え",
+    title: "Clockworker ユーザーマニュアル",
+    description: "Clockworker ユーザーマニュアル",
+  },
+  en: {
+    open: "Open contents",
+    close: "Close contents",
+    lang: "Switch to Japanese",
+    title: "Clockworker User Manual",
+    description: "Clockworker user manual",
+  },
 };
+
+let lang = localStorage.getItem("cw-lang") === "en" ? "en" : "ja";
 
 const svgFocusGroups = {
   oled: ["oled"],
@@ -378,8 +388,32 @@ function openToc(open) {
   toc.classList.toggle("is-open", open);
   tocBackdrop.hidden = !open;
   menuButton.setAttribute("aria-expanded", String(open));
-  menuButton.setAttribute("aria-label", open ? "目次を閉じる" : "目次を開く");
+  menuButton.setAttribute("aria-label", open ? ariaLabels[lang].close : ariaLabels[lang].open);
 }
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  document.title = ariaLabels[lang].title;
+  const description = document.querySelector('meta[name="description"]');
+  if (description) description.setAttribute("content", ariaLabels[lang].description);
+  langButton.textContent = lang === "en" ? "JA" : "EN";
+  langButton.setAttribute("aria-label", ariaLabels[lang].lang);
+  menuButton.setAttribute("aria-label", toc.classList.contains("is-open") ? ariaLabels[lang].close : ariaLabels[lang].open);
+  document.querySelectorAll("[data-en]").forEach((el) => {
+    if (el.dataset.ja === undefined) el.dataset.ja = el.textContent;
+    el.textContent = lang === "en" ? el.dataset.en : el.dataset.ja;
+  });
+  document.querySelectorAll("[data-en-aria]").forEach((el) => {
+    if (el.dataset.jaAria === undefined) el.dataset.jaAria = el.getAttribute("aria-label") || "";
+    el.setAttribute("aria-label", lang === "en" ? el.dataset.enAria : el.dataset.jaAria);
+  });
+}
+
+langButton.addEventListener("click", () => {
+  lang = lang === "en" ? "ja" : "en";
+  localStorage.setItem("cw-lang", lang);
+  applyLang();
+});
 
 function scenePreset(screen) {
   state.screen = screen;
@@ -408,11 +442,14 @@ function setScene(scene, focus) {
   state.readerFocus = focus;
   if (!unchanged) scenePreset(scene);
   panelStage.dataset.focus = focus;
-  panelStage.classList.toggle("is-tempo-demo", focus === "rotary");
-  panelDetail.textContent = focusDetails[focus] || "各部名称";
+  panelStage.style.setProperty("--panel-pan-x", "0px");
+  panelStage.style.setProperty("--panel-pan-y", "0px");
+  panelStage.style.setProperty("--panel-scale", "1");
+  panelMarkers.forEach((marker) => {
+    marker.classList.toggle("is-current", focus === "overview" || marker.dataset.markerFocus === focus);
+  });
   updateSvgFocus(focus);
 }
-
 
 function preparePanelSvg() {
   panelSvg = panelSvgHost.querySelector("svg");
@@ -434,7 +471,7 @@ function preparePanelSvg() {
 
 async function loadPanelSvg() {
   try {
-    const response = await fetch("panel.svg?v=20260716a");
+    const response = await fetch("panel.svg?v=20260716d");
     panelSvgHost.innerHTML = await response.text();
     preparePanelSvg();
   } catch {
@@ -460,52 +497,87 @@ function animatePanel(now) {
   const knob = panelSvg.querySelector('[data-name="rotaryknob"]');
   if (!knob) return;
   const focusIsKnob = state.readerFocus === "rotary";
-  if (focusIsKnob && now - state.demoBpmAt > 900) {
-    state.previousBpm = state.bpm;
-    state.bpm = state.bpm >= 124 ? 120 : state.bpm + 1;
-    state.bpmAnimationAt = now;
-    state.demoBpmAt = now;
-  }
-  const angle = focusIsKnob ? Math.round((now / 18) % 360) : 0;
+  const angle = focusIsKnob ? (state.tempoDemo ? Math.round((now / 18) % 360) : Math.round(Math.sin(now / 420) * 18)) : 0;
   knob.style.transform = `rotate(${angle}deg)`;
 }
 
 const steps = [...document.querySelectorAll(".manual-step")];
+const tempoStep = document.querySelector('[data-demo="tempo"]');
 let sceneSyncQueued = false;
 function activateStep(step) {
   steps.forEach((item) => item.classList.toggle("is-active", item === step));
+  state.tempoDemo = step.dataset.demo === "tempo";
+  panelStage.dataset.demo = state.tempoDemo ? "tempo" : "";
   setScene(step.dataset.scene || "home", step.dataset.focus || "overview");
 }
 
 function syncSceneFromScroll() {
   sceneSyncQueued = false;
-  const targetY = Math.min(260, window.innerHeight * .42);
+  const targetY = Math.min(window.innerHeight * .2, 112);
   let best = steps[0];
   let bestDistance = Infinity;
   steps.forEach((step) => {
     const rect = step.getBoundingClientRect();
-    if (rect.bottom < 0) return;
+    if (rect.bottom < 12) return;
     const distance = Math.abs(rect.top - targetY);
     if (distance < bestDistance) {
       best = step;
       bestDistance = distance;
     }
   });
+  if (tempoStep) {
+    const rect = tempoStep.getBoundingClientRect();
+    if (rect.top < targetY && rect.bottom > targetY) best = tempoStep;
+  }
   activateStep(best);
 }
 function queueSceneSync() {
   if (sceneSyncQueued) return;
+  sceneSyncQueued = true;
   requestAnimationFrame(syncSceneFromScroll);
+}
+
+function targetFromHash() {
+  if (!location.hash) return null;
+  const id = decodeURIComponent(location.hash.slice(1));
+  return document.getElementById(id);
+}
+
+function scrollToHashStep(behavior = "auto") {
+  const target = targetFromHash();
+  if (!target) return false;
+  target.scrollIntoView({ block: "start", behavior });
+  const targetStep = target.classList.contains("manual-step") ? target : target.querySelector(".manual-step");
+  if (targetStep) activateStep(targetStep);
+  setTimeout(queueSceneSync, behavior === "smooth" ? 520 : 80);
+  return true;
 }
 
 menuButton.addEventListener("click", () => openToc(!toc.classList.contains("is-open")));
 tocBackdrop.addEventListener("click", () => openToc(false));
-toc.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => openToc(false)));
+toc.querySelectorAll("a").forEach((link) => link.addEventListener("click", (event) => {
+  event.preventDefault();
+  const href = link.getAttribute("href");
+  if (href) history.pushState(null, "", href);
+  scrollToHashStep("smooth");
+  openToc(false);
+}));
 window.addEventListener("scroll", queueSceneSync, { passive: true });
 window.addEventListener("resize", queueSceneSync);
-window.addEventListener("hashchange", queueSceneSync);
-loadPanelSvg();
-setScene("home", "overview");
-queueSceneSync();
+window.addEventListener("hashchange", () => scrollToHashStep("auto"));
+
+async function initializeManual() {
+  applyLang();
+  const hasHash = scrollToHashStep("auto");
+  await loadPanelSvg();
+  if (hasHash) {
+    scrollToHashStep("auto");
+  } else {
+    setScene("home", "overview");
+    queueSceneSync();
+  }
+}
+
+initializeManual();
 
 Promise.all(Object.values(images).map((image) => image.decode?.().catch(() => {}))).finally(() => requestAnimationFrame(render));

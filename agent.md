@@ -1,34 +1,47 @@
-# Clockworker web manual handoff
+# Clockworker user manual handoff
 
-このディレクトリは Clockworker の公開用 Web マニュアルです。本文を主役にした日本語ドキュメントで、最初の「各部の名称と基本操作」章だけがスクロール連動パネルを持ちます。
+This repository is the deployable, bilingual Clockworker user manual. The local manual is the source of truth; user-facing behavior must be verified against the Clockworker firmware sources before it is documented.
 
-## 構成
+## Files
 
-- `index.html`
-  - 文書構造は H1（製品名）→ H2（章）→ H3（項目）。装飾用の eyebrow は使用しない。
-  - `.guided-section` のみが、パネルと説明本文を横並びにする。`manual-step` の `data-scene` と `data-focus` が表示内容と SVG のフォーカスを決める。
-- `style.css`
-  - ページ全体が通常スクロールする。`.guided-panel-wrap` はガイド章の範囲だけ `sticky` になり、章末では本文と一緒に上へ流れる。
-  - OLED とロータリーの説明は `.control-grid` の2カラム。モバイルでは1カラムになる。
-- `app.js`
-  - OLED 描画、パネル SVG 読み込み、ウィンドウスクロールへのフォーカス同期を担当する。
-  - ロータリー項目を読んでいる間は、緑色 LED、ポインター、BPM 表示をアニメーションする。
-- `panel.svg`
-  - 各部品は `data-name` で識別する。SVG 自体は拡大・パンせず、必要な部品だけを明るく表示する。
-- `icons/`
-  - OLED 表示に使う PNG 素材。公開物に含めること。`app.js` から `icons/<name>.png` として読む。
+- `index.html`: Japanese source copy, complete English translations in `data-en`, table of contents, user instructions, and CSS/SVG diagrams.
+- `style.css`: document layout, diagrams, responsive rules, and print styles.
+- `app.js`: language switching, panel SVG loading, OLED rendering, section focus, and hash navigation.
+- `panel.svg`: annotated front-panel artwork.
+- `icons/`: OLED screen assets used by `app.js`.
 
-## 確認
+## Documentation rules
+
+- Write for a person using the product. Do not add GPIO, UART, Core 1, SIO, logic-analyzer, release-gate, or other developer/manufacturing information.
+- Do not guess electrical limits, dimensions, compatibility, connector standards, or behavior that is not confirmed by the firmware or product sources.
+- Keep Quick Start near the beginning, then explain controls, clock/MIDI behavior, configuration, firmware update, troubleshooting, and user-facing specifications.
+- Keep Japanese and English equivalent. Every translatable visible element needs `data-en`; accessible labels use `data-en-aria` where required.
+- `data-en` replaces `textContent`, so put it only on elements whose child markup does not need to survive a language change.
+- Prefer small connection and signal diagrams next to procedures instead of decorative graphics.
+
+## Interaction and layout
+
+- The header language button stores the selection in `localStorage("cw-lang")`.
+- `section.manual-step` values in `data-scene` and `data-focus` control the OLED scene and highlighted panel region.
+- Hash links must work on first load as well as from the table of contents.
+- On narrow screens the panel belongs in the document flow; it must not remain sticky over the instructions.
+- Keep cache-busting values synchronized in `index.html` and the `panel.svg` URL in `app.js`. Current value: `20260716d`.
+
+## Verification
+
+Run:
 
 ```sh
 node --check app.js
 git diff --check
-python3 -m http.server 8090
 ```
 
-確認ポイント:
+In a browser, check Japanese and English at desktop and mobile widths. Verify:
 
-- H1 / H2 / H3 の順序が崩れていない。
-- ガイド章ではパネルが追従し、次の H2 で追従を解除する。
-- ロータリー項目で緑LED点滅、回転、OLEDのBPM更新が同期する。
-- モバイル幅で横スクロールが発生しない。
+- no missing translations, duplicate IDs, broken internal links, image failures, or console errors;
+- `#front-panel` and other table-of-contents links land below the fixed header;
+- panel markers and OLED graphics load;
+- the page has no horizontal overflow;
+- the mobile panel does not cover the manual text.
+
+Pushes to `main` deploy through GitHub Pages.
