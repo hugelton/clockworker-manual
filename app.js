@@ -2,8 +2,6 @@
 
 const canvas = document.querySelector("#oled-canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
-const screenName = document.querySelector("#screen-name");
-const panelDetail = document.querySelector("#panel-detail");
 const panelStage = document.querySelector("#panel-stage");
 const panelSvgHost = document.querySelector("#panel-svg");
 const menuButton = document.querySelector("#menu-button");
@@ -296,7 +294,6 @@ function render(now = performance.now()) {
   else if (state.screen === "config") drawSettings(now);
   else if (state.screen === "swing") drawSwing();
   else drawHome(now);
-  screenName.textContent = state.screen === "saver" ? "SCREEN SAVER" : state.screen.toUpperCase();
   animatePanel(now);
   requestAnimationFrame(render);
 }
@@ -355,16 +352,6 @@ function action(name) {
   else if (name === "turn-down") turn(-1);
 }
 
-const focusDetails = {
-  overview: { ja: "各部名称", en: "Part Names" },
-  oled: { ja: "OLED", en: "OLED" },
-  rotary: { ja: "Encoder", en: "Encoder" },
-  transport: { ja: "START / STOP / TAP", en: "START / STOP / TAP" },
-  menu: { ja: "SOURCE / PORT / CONFIG", en: "SOURCE / PORT / CONFIG" },
-  clock: { ja: "Clock In / Action In / Clock Out A-D", en: "Clock In / Action In / Clock Out A-D" },
-  midi: { ja: "TRS MIDI / USB-C", en: "TRS MIDI / USB-C" },
-};
-
 const ariaLabels = {
   ja: { open: "目次を開く", close: "目次を閉じる", lang: "英語に切り替え" },
   en: { open: "Open contents", close: "Close contents", lang: "Switch to Japanese" },
@@ -413,7 +400,6 @@ function applyLang() {
     if (el.dataset.ja === undefined) el.dataset.ja = el.textContent;
     el.textContent = lang === "en" ? el.dataset.en : el.dataset.ja;
   });
-  panelDetail.textContent = (focusDetails[state.readerFocus] || focusDetails.overview)[lang];
 }
 
 langButton.addEventListener("click", () => {
@@ -455,7 +441,6 @@ function setScene(scene, focus) {
   panelStage.style.setProperty("--panel-pan-x", `${panX}px`);
   panelStage.style.setProperty("--panel-pan-y", `${panY}px`);
   panelStage.style.setProperty("--panel-scale", scale);
-  panelDetail.textContent = (focusDetails[focus] || focusDetails.overview)[lang];
   updateSvgFocus(focus);
 }
 
@@ -504,7 +489,7 @@ function preparePanelSvg() {
 
 async function loadPanelSvg() {
   try {
-    const response = await fetch("panel.svg?v=20260715o");
+    const response = await fetch("panel.svg?v=20260715p");
     panelSvgHost.innerHTML = await response.text();
     preparePanelSvg();
   } catch {

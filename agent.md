@@ -50,6 +50,10 @@
 
 `section.manual-step` に `data-panel="hidden"` を付けると、`.panel-reader` に `is-collapsed` クラスが付いて高さ0まで折りたたまれ、本文(`.manual-copy`)がその分フルサイズで表示されます(`activateStep()` 内で切り替え)。Safety、Specifications、Quick Start、Sync Compatibility、Performance、FAQなど「パネルを見せる必要がない」章に付与済みです。新しい章を足すときも、パネル部位に触れない段落にはこれを付けること。
 
+重要: `.panel-reader` の `height` に transition を付けない。スクロール中に高さが変わるgrid行(`auto`トラック)をアニメーションさせると、スクロールと同時にレイアウト再計算が走ってガクつく。折りたたみは瞬時に切り替える(現状の実装のまま)。同様の理由で `.manual-step` 側の非アクティブ時フェードも廃止済み — スクロール中の常時アニメーションはこのページでは基本避けること。
+
+パネル下の `#screen-name`(HOME/SOURCEなど)と `#panel-detail`(各部名称ラベル)は削除済み。復活させる場合は `app.js` 側の `render()` / `setScene()` / `applyLang()` に対応する行を戻す必要がある(現状は参照ごと削除してある)。
+
 ## 多言語対応 (EN/JA)
 
 - ヘッダー右上の `#lang-button` で日本語/英語を切り替えます。状態は `localStorage("cw-lang")` に保存。
@@ -71,7 +75,7 @@
 現在値:
 
 ```text
-20260715o
+20260715p
 ```
 
 ## Verification

@@ -189,14 +189,12 @@ main {
   overflow: hidden;
   border-bottom: 1px solid var(--border);
   background: var(--bg);
-  transition: height 420ms cubic-bezier(.2, .8, .2, 1), padding 420ms cubic-bezier(.2, .8, .2, 1), opacity 260ms ease, border-color 260ms ease;
 }
 
 .panel-reader.is-collapsed {
   height: 0;
   padding-top: 0;
   padding-bottom: 0;
-  opacity: 0;
   border-bottom-color: transparent;
 }
 
@@ -245,23 +243,6 @@ main {
   image-rendering: crisp-edges;
 }
 
-#screen-name {
-  margin: 0;
-  color: var(--fg-muted);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: .08em;
-  text-align: center;
-}
-
-#panel-detail {
-  min-height: 1.4em;
-  margin: 0;
-  color: var(--fg);
-  font-size: 13px;
-  text-align: center;
-}
-
 .manual-copy {
   grid-row: 3;
   display: grid;
@@ -281,11 +262,7 @@ main {
   min-height: 52svh;
   padding: 26px 0 40px;
   border-top: 1px solid var(--border);
-  opacity: .28;
-  transition: opacity 220ms ease;
 }
-
-.manual-step.is-active { opacity: 1; }
 
 .manual-step h2 {
   margin: 0 0 12px;
