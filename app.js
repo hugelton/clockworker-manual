@@ -477,7 +477,7 @@ function preparePanelSvg() {
 
 async function loadPanelSvg() {
   try {
-    const response = await fetch("panel.svg?v=20260715m");
+    const response = await fetch("panel.svg?v=20260715n");
     panelSvgHost.innerHTML = await response.text();
     preparePanelSvg();
   } catch {

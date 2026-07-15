@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Clockworker Web Manual</title>
-    <link rel="stylesheet" href="style.css?v=20260715m">
+    <link rel="stylesheet" href="style.css?v=20260715n">
   </head>
   <body>
     <header class="site-header">
@@ -18,6 +18,22 @@
     <nav id="toc" class="toc" aria-label="目次">
       <div class="toc-panel">
         <p>目次</p>
+
+        <p class="toc-group">Introduction</p>
+        <a href="#intro-about">Clockworkerとは</a>
+        <a href="#intro-features">特徴</a>
+
+        <p class="toc-group">Safety</p>
+        <a href="#safety-install">Eurorackへの取り付け</a>
+        <a href="#safety-power">電源について</a>
+        <a href="#safety-notes">注意事項</a>
+
+        <p class="toc-group">Specifications</p>
+        <a href="#specs-panel">パネル仕様</a>
+        <a href="#specs-io">入出力</a>
+        <a href="#specs-clock">対応クロック</a>
+
+        <p class="toc-group">Front Panel</p>
         <a href="#front-panel">各部名称</a>
         <a href="#oled">OLED</a>
         <a href="#encoder">Encoder</a>
@@ -25,6 +41,67 @@
         <a href="#source-port-config">SOURCE / PORT / CONFIG</a>
         <a href="#clock-io">Clock In / Out</a>
         <a href="#midi-usb">MIDI / USB</a>
+
+        <p class="toc-group">Quick Start</p>
+        <a href="#quickstart-power">電源投入</a>
+        <a href="#quickstart-internal">Internal Clockで動かす</a>
+        <a href="#quickstart-external">外部同期する</a>
+        <a href="#quickstart-midi">MIDI Clockを送る</a>
+
+        <p class="toc-group">User Interface</p>
+        <a href="#ui-home">ホーム画面</a>
+        <a href="#ui-menu">メニュー構成</a>
+        <a href="#ui-encoder">エンコーダ操作</a>
+        <a href="#ui-buttons">ボタン操作</a>
+
+        <p class="toc-group">Clock Source</p>
+        <a href="#source-internal">Internal</a>
+        <a href="#source-analog">Analog Clock In</a>
+        <a href="#source-midi-din">MIDI DIN</a>
+        <a href="#source-usb-midi">USB MIDI</a>
+
+        <p class="toc-group">Clock Outputs</p>
+        <a href="#outputs-ports">Port A-D</a>
+        <a href="#outputs-ppqn">PPQN</a>
+        <a href="#outputs-pulse">Pulse Width</a>
+        <a href="#outputs-polarity">Polarity</a>
+
+        <p class="toc-group">MIDI</p>
+        <a href="#midi-usb-detail">USB MIDI</a>
+        <a href="#midi-din-detail">MIDI DIN</a>
+        <a href="#midi-clock-messages">MIDI Clock</a>
+        <a href="#midi-start">Start</a>
+        <a href="#midi-stop">Stop</a>
+        <a href="#midi-continue">Continue</a>
+
+        <p class="toc-group">Sync Compatibility</p>
+        <a href="#sync-ppqn-meaning">PPQNとは</a>
+        <a href="#sync-methods">代表的な同期方式</a>
+        <a href="#sync-devices">機器別設定例</a>
+
+        <p class="toc-group">Performance</p>
+        <a href="#perf-engine">内部96 PPQNエンジン</a>
+        <a href="#perf-jitter">ジッター測定</a>
+        <a href="#perf-tempo">テンポ精度</a>
+        <a href="#perf-env">測定環境</a>
+
+        <p class="toc-group">Firmware Update</p>
+        <a href="#firmware-bootloader">Bootloader</a>
+        <a href="#firmware-trouble">トラブル時</a>
+
+        <p class="toc-group">Troubleshooting</p>
+        <a href="#trouble-sync">同期しない</a>
+        <a href="#trouble-tempo">テンポが違う</a>
+        <a href="#trouble-midi">MIDIを受信しない</a>
+        <a href="#trouble-usb">USBを認識しない</a>
+
+        <p class="toc-group">FAQ</p>
+        <a href="#faq-audio">Clock Outから音は出ますか</a>
+        <a href="#faq-midi-note">MIDIノートで開始できますか</a>
+        <a href="#faq-save">STOP後に設定は保存されますか</a>
+        <a href="#faq-autostart">外部Clock Inだけで自動開始しますか</a>
+        <a href="#faq-swing">Swingは外部同期にも効きますか</a>
+        <a href="#faq-start">どの設定から試すべきですか</a>
       </div>
     </nav>
     <div id="toc-backdrop" class="toc-backdrop" hidden></div>
@@ -42,7 +119,55 @@
       </section>
 
       <article class="manual-copy" aria-label="Clockworker manual text">
-        <section id="front-panel" class="manual-step is-active" data-scene="home" data-focus="overview">
+        <section id="intro-about" class="manual-step is-active" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Introduction</p>
+          <h2>Clockworkerとは</h2>
+          <p>Clockworkerは、4系統のアナログClock Out、アナログClock In、USB MIDI、UART/TRS MIDIを備えたEurorack向けマスタークロック/同期モジュールです。内部テンポで動作するほか、外部アナログクロック、USB MIDI Clock、TRS MIDI Clockに同期できます。</p>
+        </section>
+
+        <section id="intro-features" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Introduction</p>
+          <h2>特徴</h2>
+          <p>4系統の独立したClock Out、内部96 PPQNクロックエンジン、30.0-250.0 BPMの内部クロックを備えます。Clock OutごとにPPQN、パルス幅、極性を設定でき、RUN/START/STOP/RESETのトランスポート出力にも対応します。128x32 OLEDとエンコーダ中心の浅いUIで、設定はUSB経由で保存・更新できます。</p>
+        </section>
+
+        <section id="safety-install" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Safety</p>
+          <h2>Eurorackへの取り付け</h2>
+          <p>Eurorackケースの電源を必ず切ってから取り付けます。電源ケーブルの向き、赤線、-12 V表記を確認し、モジュールを固定してから電源を入れてください。初回起動時は、Clock Outを他機器へ接続する前にOLED表示と異常発熱がないことを確認します。</p>
+        </section>
+
+        <section id="safety-power" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Safety</p>
+          <h2>電源について</h2>
+          <p>電源の接続・取り外しは、必ずケースの電源を切ってから行ってください。</p>
+        </section>
+
+        <section id="safety-notes" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Safety</p>
+          <h2>注意事項</h2>
+          <p>Clock Out同士や他機器の出力同士を直結しないでください。Clock Inは必ず保護/レベル変換済みの入力回路を通し、未保護のEurorack信号をGPIOへ直接入れないでください。同期システム内のマスタークロックは1台だけにし、ファームウェア更新や配線変更はトランスポート停止中に行います。RUN中に変更した設定はSTOP後に保存されるため、変更直後に電源を切らないでください。</p>
+        </section>
+
+        <section id="specs-panel" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Specifications</p>
+          <h2>パネル仕様</h2>
+          <p>表示はSSD1306 128x32 OLED、操作はロータリーエンコーダとSTART、STOP、ACTION、MENU/SOURCE/PORT/CONFIG系ボタンです。出力はClock Out A-D、入力はClock In、Action In、MIDI IN、USB-Cで、MIDIはUSB MIDIとUART/TRS MIDIに対応します。</p>
+        </section>
+
+        <section id="specs-io" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Specifications</p>
+          <h2>入出力</h2>
+          <p>Clock Out A-DはGPIO28/27/29/26でクロックまたはトランスポートを出力します。Clock InはGPIO3で外部アナログクロックを、Action InはGPIO2でPLAY/STOP/PLAY-STOP/RESETを受け付けます。MIDI IN/OUTはUART0(GPIO1 RX/GPIO0 TX、31,250 baud)、USB-CはUSB MIDI、Maintenance CDC、BOOTSEL更新に使います。</p>
+        </section>
+
+        <section id="specs-clock" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Specifications</p>
+          <h2>対応クロック</h2>
+          <p>内部クロックは30.0-250.0 BPM、内部解像度は96 PPQNです。Clock In PPQNは1/2/4/6/12/24/48、Clock Out ANALOGはx1/x2/x4、Clock Out SYNCは6/12/24/48 PPQNから選べます。パルス幅は1/2/5/10/15 ms、極性はRISE/FALL、MIDI Clockは24 PPQNです。</p>
+        </section>
+
+        <section id="front-panel" class="manual-step" data-scene="home" data-focus="overview">
           <p class="eyebrow">Front Panel</p>
           <h2>各部名称</h2>
           <p>Clockworkerは、4系統のクロック／トランスポート出力を持つEurorackクロックジェネレーターです。パネル上では、OLED、ロータリーエンコーダ、START / STOP / TAP、SOURCE / PORT / CONFIG、Clock In / Action In、Clock Out A-D、TRS MIDI、USB-Cを使います。</p>
@@ -83,9 +208,255 @@
           <h2>TRS MIDI / USB-C</h2>
           <p>TRS MIDIとUSB MIDIはMIDI Clockとトランスポートを扱います。USB-CはUSB MIDI、メンテナンス、ファームウェア更新にも使います。</p>
         </section>
+
+        <section id="quickstart-power" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Quick Start</p>
+          <h2>電源投入</h2>
+          <p>ケースの電源を切ってClockworkerを接続し、Clock Out Aを受け側モジュールのClock Inへつなぎます。ケースの電源を入れると、OLEDにHOME画面が出てSTOP状態で起動します。</p>
+        </section>
+
+        <section id="quickstart-internal" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Quick Start</p>
+          <h2>Internal Clockで動かす</h2>
+          <p>SOURCEを押してエンコーダでINTERNALを選び、SOURCEで確定します。HOMEでエンコーダを回してBPMを設定し、PORTでClock Out AのPPQNを決めたらSTARTを押します。</p>
+        </section>
+
+        <section id="quickstart-external" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Quick Start</p>
+          <h2>外部同期する</h2>
+          <p>外部クロック源を止め、そのClock OutをClockworkerのClock Inへ接続します。CONFIGでINPUT PPQNとINPUT POLARITYを合わせ、SOURCEでEXT CLOCKを選んでSTARTを押すと外部クロック待機状態になります。外部クロック源を再生すると同期が始まります。</p>
+        </section>
+
+        <section id="quickstart-midi" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Quick Start</p>
+          <h2>MIDI Clockを送る</h2>
+          <p>SOURCEをINTERNALにし、CONFIGでUSB MIDI OUTまたはTRS MIDI OUTをONにします。DAWやシーケンサー側でClockworkerを入力先にすると、STARTでFA StartとF8 Clock(24 PPQN)を、STOPでFC Stopを送信します。</p>
+        </section>
+
+        <section id="ui-home" class="manual-step" data-scene="home" data-focus="oled">
+          <p class="eyebrow">User Interface</p>
+          <h2>ホーム画面</h2>
+          <p>HOMEにはBPM、ソース、RUN/STOP、A-D出力の概要が表示されます。外部ソース選択中のBPM表示は測定値で、HOMEでBPMを変更しても外部ソースのテンポは変わりません。</p>
+        </section>
+
+        <section id="ui-menu" class="manual-step" data-scene="home" data-focus="oled">
+          <p class="eyebrow">User Interface</p>
+          <h2>メニュー構成</h2>
+          <p>画面はHOME、SOURCE(INT/EXT/USB/MIDI)、PORT(A-Dごとのタイプ・値・極性・幅)、CONFIG(SLEEP、MIDI OUT、入力PPQN/極性、Action、Update)で構成されます。</p>
+        </section>
+
+        <section id="ui-encoder" class="manual-step" data-scene="swing" data-focus="rotary">
+          <p class="eyebrow">User Interface</p>
+          <h2>エンコーダ操作</h2>
+          <p>回すと現在の値や選択肢が変わり、短押しで決定・ON/OFF切替・極性切替を行います。押しながら回すと、HOMEではSwing、PORTでは選択ポートのPulse Widthを変更します。</p>
+        </section>
+
+        <section id="ui-buttons" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">User Interface</p>
+          <h2>ボタン操作</h2>
+          <p>STARTはトランスポート開始/外部ソース待機、STOPは停止、TAPはINTERNAL時のタップテンポです。SOURCEはソース選択の開始/確定、PORTはA→B→C→Dの順に画面移動、CONFIGは設定画面の開閉に使います。</p>
+        </section>
+
+        <section id="source-internal" class="manual-step" data-scene="home" data-focus="oled">
+          <p class="eyebrow">Clock Source</p>
+          <h2>Internal</h2>
+          <p>Clockworker自身のBPM(30.0-250.0)と内部96 PPQNエンジンで動作します。SwingはInternal Clockにのみ適用されます。</p>
+        </section>
+
+        <section id="source-analog" class="manual-step" data-scene="config" data-focus="clock">
+          <p class="eyebrow">Clock Source</p>
+          <h2>Analog Clock In</h2>
+          <p>Clock Inへの外部パルスに同期します。入力PPQNと使用エッジはCONFIGで送信元に合わせ、クロックが約0.5秒途切れると停止します。STOP後は外部エッジだけでは再開せず、再度STARTが必要です。</p>
+        </section>
+
+        <section id="source-midi-din" class="manual-step" data-scene="source" data-focus="midi">
+          <p class="eyebrow">Clock Source</p>
+          <h2>MIDI DIN</h2>
+          <p>TRS/UART MIDI入力(24 PPQN)をクロックソースにします。StartまたはContinueで待機し、次の安定したF8で開始・同期します。</p>
+        </section>
+
+        <section id="source-usb-midi" class="manual-step" data-scene="source" data-focus="midi">
+          <p class="eyebrow">Clock Source</p>
+          <h2>USB MIDI</h2>
+          <p>USB MIDI入力をクロックソースにし、DAWやPCのMIDI Clockに同期します。USB転送のばらつきはタイムスタンプ補間と軽い外れ値処理で吸収します。</p>
+        </section>
+
+        <section id="outputs-ports" class="manual-step" data-scene="port" data-focus="clock">
+          <p class="eyebrow">Clock Outputs</p>
+          <h2>Port A-D</h2>
+          <p>各ポートはANALOG(x1/x2/x4)、SYNC(6/12/24/48 PPQN)、TRANSPORT(RUN/START/STOP/RESET)から個別に選べます。デフォルトはA=1 PPQN、B=2 PPQN、C=24 PPQN、D=TRANSPORT RUNです。</p>
+        </section>
+
+        <section id="outputs-ppqn" class="manual-step" data-scene="port" data-focus="clock">
+          <p class="eyebrow">Clock Outputs</p>
+          <h2>PPQN</h2>
+          <p>PPQNはPulses Per Quarter Note、4分音符1拍あたりのパルス数です。120 BPMで24 PPQNの場合、クロック間隔は約20.833 msになります。</p>
+        </section>
+
+        <section id="outputs-pulse" class="manual-step" data-scene="port" data-focus="clock">
+          <p class="eyebrow">Clock Outputs</p>
+          <h2>Pulse Width</h2>
+          <p>パルス幅は1、2、5、10、15 msから選べます。周期に対して幅が長すぎる場合、ファームウェアが実際の周期に収まるよう調整します。</p>
+        </section>
+
+        <section id="outputs-polarity" class="manual-step" data-scene="port" data-focus="clock">
+          <p class="eyebrow">Clock Outputs</p>
+          <h2>Polarity</h2>
+          <p>RISEはアイドルLOW・パルス時HIGHの通常極性、FALLはその反転です。ソース切り替えや停止時は、出力を安全なアイドル状態へ戻します。</p>
+        </section>
+
+        <section id="midi-usb-detail" class="manual-step" data-scene="config" data-focus="midi">
+          <p class="eyebrow">MIDI</p>
+          <h2>USB MIDI</h2>
+          <p>USB-C経由でClockworker MIDIとして認識され、入力ソースとしてもMIDI Clock出力先としても使えます。</p>
+        </section>
+
+        <section id="midi-din-detail" class="manual-step" data-scene="config" data-focus="midi">
+          <p class="eyebrow">MIDI</p>
+          <h2>MIDI DIN</h2>
+          <p>ファームウェア上はUART/TRS MIDIとして扱い、GPIO0 TX、GPIO1 RX、31,250 baudを使用します。</p>
+        </section>
+
+        <section id="midi-clock-messages" class="manual-step" data-scene="config" data-focus="midi">
+          <p class="eyebrow">MIDI</p>
+          <h2>MIDI Clock</h2>
+          <p>MIDI Clockは24 PPQNです。送信するリアルタイムメッセージはTiming Clock(F8)、Start(FA)、Continue(FB)、Stop(FC)のみで、Note、CC、Program Change、Pitch Bend、SysExは無視されます。</p>
+        </section>
+
+        <section id="midi-start" class="manual-step" data-scene="config" data-focus="midi">
+          <p class="eyebrow">MIDI</p>
+          <h2>Start</h2>
+          <p>マスター時、STARTを押すと有効化されたMIDI OUTへFAを送信します。USB MIDIやMIDI DINがソースの場合は、FA受信で開始待機します。</p>
+        </section>
+
+        <section id="midi-stop" class="manual-step" data-scene="config" data-focus="midi">
+          <p class="eyebrow">MIDI</p>
+          <h2>Stop</h2>
+          <p>STOPを押す、またはFCを受信するとトランスポートを停止します。マスター時は有効化されたMIDI OUTへFCを送信します。</p>
+        </section>
+
+        <section id="midi-continue" class="manual-step" data-scene="config" data-focus="midi">
+          <p class="eyebrow">MIDI</p>
+          <h2>Continue</h2>
+          <p>FB Continueを受信すると、次のF8 Clockで再開・同期します。マスター時の送信にも対応します。</p>
+        </section>
+
+        <section id="sync-ppqn-meaning" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Sync Compatibility</p>
+          <h2>PPQNとは</h2>
+          <p>PPQNは4分音符1拍に何回クロックを出すかを表します。PPQNが合っていないと、受け側のテンポは整数倍または整数分の1になります。</p>
+        </section>
+
+        <section id="sync-methods" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Sync Compatibility</p>
+          <h2>代表的な同期方式</h2>
+          <p>アナログ1 PPQNは4分音符ごとに1パルス、2 PPQNは8分音符相当、4 PPQNは16分音符相当です。DIN Sync/MIDI Clockは4分音符あたり24パルス、高解像度モジュラー同期には48パルスを使います。</p>
+        </section>
+
+        <section id="sync-devices" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Sync Compatibility</p>
+          <h2>機器別設定例</h2>
+          <p>Clockworker同士は24 PPQNまたは48 PPQNで送受信PPQNを一致させます。minilogue XDはMIDI ClockまたはSYNC OUT設定に合わせ、TRS/UART MIDI入力での実機同期を確認済みです。機器側の設定はモデルにより異なるため、まずは低いBPMでRISE、5 ms幅から確認してください。</p>
+        </section>
+
+        <section id="perf-engine" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Performance</p>
+          <h2>内部96 PPQNエンジン</h2>
+          <p>内部エンジンは96 PPQNで動作し、各出力のPPQNやMIDI Clockはこのグリッドから生成されます。</p>
+        </section>
+
+        <section id="perf-jitter" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Performance</p>
+          <h2>ジッター測定</h2>
+          <p>2026-07-13の実測では、132.0 BPM、Swing 50、5 ms RISEパルスで1-48 PPQNの平均周期誤差は約-0.004%でした。48 PPQNの10秒測定では標準偏差約10.167 us、ピークtoピーク約123.5 usでした。</p>
+        </section>
+
+        <section id="perf-tempo" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Performance</p>
+          <h2>テンポ精度</h2>
+          <p>固定小数点スケジューラにより、以前の整数マイクロ秒丸めによる共通誤差は低減されています。短期的なばらつきはあるものの、遅れたtickの後に回復する設計で、長期的なテンポ誤差として蓄積しません。</p>
+        </section>
+
+        <section id="perf-env" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Performance</p>
+          <h2>測定環境</h2>
+          <p>測定はClockworker RP2040 Zero試作機、Release候補ファームウェア、Core1 SIO gate output backend、sigrok 2 MHzキャプチャで実施し、Clock Aを中心にUSB MIDI、TRS MIDI、外部Clock Inを個別に確認しました。Clock B/D物理ジャック、複数DAW/ホスト、長時間外部同期は継続確認中です。</p>
+        </section>
+
+        <section id="firmware-bootloader" class="manual-step" data-scene="config" data-focus="midi">
+          <p class="eyebrow">Firmware Update</p>
+          <h2>Bootloader</h2>
+          <p>STOP状態でCONFIGのUPDATEを選び、エンコーダで確定するとRP2040のBOOTSELモードに入り、UF2を書き込めます。</p>
+        </section>
+
+        <section id="firmware-trouble" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Firmware Update</p>
+          <h2>トラブル時</h2>
+          <p>UPDATEはSTOP中のみ受け付け、RUN中の実行は拒否されます。USB MIDIとMaintenance CDCは別インターフェースで、シリアルポートを開く/1200 baud操作だけではBOOTSELに入りません。入らない場合は、RP2040 Zeroの物理BOOTSEL操作でUF2を書き込んでください。</p>
+        </section>
+
+        <section id="trouble-sync" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Troubleshooting</p>
+          <h2>同期しない</h2>
+          <p>SOURCEが正しいか、STARTを押して外部ソース待機状態にしたかを確認します。Clock InのPPQNとRISE/FALLは送信元に合わせ、MIDI同期ではFAまたはFBとF8が送られているか、ケーブルのIN/OUT方向も確認します。</p>
+        </section>
+
+        <section id="trouble-tempo" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">Troubleshooting</p>
+          <h2>テンポが違う</h2>
+          <p>テンポ違いはPPQN不一致が最も多い原因です。2倍/半分/4倍になる場合はClock In PPQNや相手機器のSync設定を見直し、USB MIDIではホスト側のMIDI Clock設定を確認します。外部ソース時のBPM表示は測定値であり、内部BPM設定ではありません。</p>
+        </section>
+
+        <section id="trouble-midi" class="manual-step" data-scene="source" data-focus="midi">
+          <p class="eyebrow">Troubleshooting</p>
+          <h2>MIDIを受信しない</h2>
+          <p>SOURCEがUSB MIDIまたはMIDIになっているか確認します。Clockworkerが受け付けるのはF8、FA、FB、FCのみで、NoteやCCだけでは動作しません。TRS/DIN MIDIではケーブル種別、Type A/Type B、IN/OUT方向を確認します。</p>
+        </section>
+
+        <section id="trouble-usb" class="manual-step" data-scene="config" data-focus="midi">
+          <p class="eyebrow">Troubleshooting</p>
+          <h2>USBを認識しない</h2>
+          <p>USB-Cケーブルがデータ対応か、別のUSBポートやハブなし接続を確認します。macOS/PC側でClockworker MIDIとClockworker Maintenanceが見えるか確認してください。BOOTSEL中は通常のMIDI/CDCデバイスではなく、RP2040のUF2ドライブとして見えます。</p>
+        </section>
+
+        <section id="faq-audio" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">FAQ</p>
+          <h2>Clock Outから音は出ますか</h2>
+          <p>いいえ。Clock Outは音声ではなく、同期用のパルス/ゲート信号です。</p>
+        </section>
+
+        <section id="faq-midi-note" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">FAQ</p>
+          <h2>MIDIノートで開始できますか</h2>
+          <p>できません。ClockworkerはMIDIリアルタイムメッセージだけをトランスポート/同期に使います。</p>
+        </section>
+
+        <section id="faq-save" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">FAQ</p>
+          <h2>STOP後に設定は保存されますか</h2>
+          <p>保存されます。RUN中はFlashへ書き込まず、STOP後に少し遅延して保存します。</p>
+        </section>
+
+        <section id="faq-autostart" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">FAQ</p>
+          <h2>外部Clock Inだけで自動開始しますか</h2>
+          <p>STOP後は自動開始しません。STARTまたはAction Inで外部ソースを待機状態にしてから、外部クロックを入力してください。</p>
+        </section>
+
+        <section id="faq-swing" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">FAQ</p>
+          <h2>Swingは外部同期にも効きますか</h2>
+          <p>SwingはInternal Clock用です。外部同期中は外部ソースのタイミングが優先されます。</p>
+        </section>
+
+        <section id="faq-start" class="manual-step" data-scene="home" data-focus="overview">
+          <p class="eyebrow">FAQ</p>
+          <h2>どの設定から試すべきですか</h2>
+          <p>まずINTERNAL、120 BPM、Clock Out A=1 PPQN、RISE、5 msで確認してください。外部機器へつなぐときは、相手機器のSync設定に合わせてPPQNを変更します。</p>
+        </section>
       </article>
     </main>
 
-    <script src="app.js?v=20260715m"></script>
+    <script src="app.js?v=20260715n"></script>
   </body>
 </html>

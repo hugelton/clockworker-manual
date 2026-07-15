@@ -1,6 +1,6 @@
 # Clockworker webmanual handoff
 
-このディレクトリは、Clockworker のWebマニュアル用プロトタイプです。Appleっぽいミニマルなページ構成で、上段に本体パネルSVG、下段にマニュアル本文を置き、本文の段落に応じてSVG側のフォーカス・OLED表示・ロータリーアニメーションを切り替えます。
+このリポジトリ直下が、Clockworker のWebマニュアル用プロトタイプです(`webmanual/` ディレクトリはありません、フラット構成)。Appleっぽいミニマルなページ構成で、上段に本体パネルSVG、下段にマニュアル本文を置き、本文の段落に応じてSVG側のフォーカス・OLED表示・ロータリーアニメーションを切り替えます。
 
 ## Files
 
@@ -30,6 +30,17 @@
 
 重要: ユーザーの意図は「本文段落に従って見せる」ことです。ユーザーがSVGを直接操作するUIは不要です。
 
+## Focus割り当ての方針
+
+マニュアル本文が `docs/manual.md`(Introduction〜FAQ、全14章相当)に増えたため、`data-focus` は次の方針で割り当てています。
+
+- Safety、Specifications、Quick Start、Sync Compatibility、Performance、FAQなど「パネルの特定部位を見せる必要のない」段落は `overview` のまま(ズームインしない)。
+- `oled` / `rotary` は、OLED画面の表示内容やエンコーダ操作そのものを説明している段落だけに絞る(例: `ui-home`, `ui-encoder`)。
+- `clock` / `menu` / `transport` / `midi` は、対応するパネル部位に直接言及している段落にのみ割り当てる。
+- 新しいfocus種別を追加する前に、既存の7種(`overview`, `oled`, `rotary`, `transport`, `menu`, `clock`, `midi`)で表現できないか検討すること。
+
+この方針により、UI章やMenu構成の説明が続いても画面が `oled`/`rotary` に張り付いたままにならないようにしています。
+
 ## Scroll and hash behavior
 
 - 本文スクロールは `.manual-copy` の内部スクロールです。
@@ -43,7 +54,7 @@
 現在値:
 
 ```text
-20260715m
+20260715n
 ```
 
 ## Verification
@@ -51,15 +62,16 @@
 最低限:
 
 ```sh
-node --check webmanual/app.js
-git diff --check -- webmanual/index.html webmanual/app.js webmanual/style.css webmanual/panel.svg webmanual/agent.md
+node --check app.js
+git diff --check -- index.html app.js style.css panel.svg agent.md
 ```
 
 ブラウザ確認:
 
-- `http://localhost:8090/webmanual/#front-panel`
-- `http://localhost:8090/webmanual/#oled`
-- `http://localhost:8090/webmanual/#encoder`
+- `http://localhost:8090/#front-panel`
+- `http://localhost:8090/#oled`
+- `http://localhost:8090/#encoder`
+- 目次(ハンバーガーメニュー)を開き、全チャプターぶんのリンクが縦スクロールで見えて操作できること。
 
 特に確認すること:
 
