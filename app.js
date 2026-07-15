@@ -2,11 +2,10 @@
 
 const canvas = document.querySelector("#oled-canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
-const screenName = document.querySelector("#screen-name");
-const panelDetail = document.querySelector("#panel-detail");
 const panelStage = document.querySelector("#panel-stage");
 const panelSvgHost = document.querySelector("#panel-svg");
 const menuButton = document.querySelector("#menu-button");
+const langButton = document.querySelector("#lang-button");
 const toc = document.querySelector("#toc");
 const tocBackdrop = document.querySelector("#toc-backdrop");
 ctx.imageSmoothingEnabled = false;
@@ -294,7 +293,6 @@ function render(now = performance.now()) {
   else if (state.screen === "config") drawSettings(now);
   else if (state.screen === "swing") drawSwing();
   else drawHome(now);
-  screenName.textContent = state.screen === "saver" ? "SCREEN SAVER" : state.screen.toUpperCase();
   animatePanel(now);
   requestAnimationFrame(render);
 }
@@ -353,14 +351,9 @@ function action(name) {
   else if (name === "turn-down") turn(-1);
 }
 
-const focusDetails = {
-  overview: "各部名称",
-  oled: "OLED",
-  rotary: "Encoder",
-  transport: "START / STOP / TAP",
-  menu: "SOURCE / PORT / CONFIG",
-  clock: "Clock In / Action In / Clock Out A-D",
-  midi: "TRS MIDI / USB-C",
+const ariaLabels = {
+  ja: { open: "目次を開く", close: "目次を閉じる", lang: "英語に切り替え" },
+  en: { open: "Open contents", close: "Close contents", lang: "Switch to Japanese" },
 };
 
 const svgFocusGroups = {
@@ -379,8 +372,25 @@ function openToc(open) {
   toc.classList.toggle("is-open", open);
   tocBackdrop.hidden = !open;
   menuButton.setAttribute("aria-expanded", String(open));
-  menuButton.setAttribute("aria-label", open ? "目次を閉じる" : "目次を開く");
+  menuButton.setAttribute("aria-label", open ? ariaLabels[lang].close : ariaLabels[lang].open);
 }
+
+function applyLang() {
+  document.documentElement.lang = lang;
+  langButton.textContent = lang === "en" ? "JA" : "EN";
+  langButton.setAttribute("aria-label", ariaLabels[lang].lang);
+  menuButton.setAttribute("aria-label", toc.classList.contains("is-open") ? ariaLabels[lang].close : ariaLabels[lang].open);
+  document.querySelectorAll("[data-en]").forEach((el) => {
+    if (el.dataset.ja === undefined) el.dataset.ja = el.textContent;
+    el.textContent = lang === "en" ? el.dataset.en : el.dataset.ja;
+  });
+}
+
+langButton.addEventListener("click", () => {
+  lang = lang === "en" ? "ja" : "en";
+  localStorage.setItem("cw-lang", lang);
+  applyLang();
+});
 
 function scenePreset(screen) {
   state.screen = screen;
@@ -476,6 +486,7 @@ let sceneSyncQueued = false;
 function activateStep(step) {
   steps.forEach((item) => item.classList.toggle("is-active", item === step));
   setScene(step.dataset.scene || "home", step.dataset.focus || "overview");
+  panelReader.classList.toggle("is-collapsed", step.dataset.panel === "hidden");
 }
 
 function syncSceneFromScroll() {
