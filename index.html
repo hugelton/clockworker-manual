@@ -3,89 +3,122 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clockworker Web Manual</title>
-    <link rel="stylesheet" href="style.css?v=20260715m">
+    <meta name="description" content="Clockworker ユーザーマニュアル">
+    <title>Clockworker ユーザーマニュアル</title>
+    <link rel="stylesheet" href="style.css?v=20260716a">
   </head>
   <body>
     <header class="site-header">
-      <button id="menu-button" class="icon-button" type="button" aria-controls="toc" aria-expanded="false" aria-label="目次を開く">
-        <span></span>
-        <span></span>
-      </button>
-      <h1>Clockworker Manual</h1>
+      <button id="menu-button" class="icon-button" type="button" aria-controls="toc" aria-expanded="false" aria-label="目次を開く"><span></span><span></span></button>
+      <p>Clockworker</p>
     </header>
 
     <nav id="toc" class="toc" aria-label="目次">
       <div class="toc-panel">
         <p>目次</p>
-        <a href="#front-panel">各部名称</a>
-        <a href="#oled">OLED</a>
-        <a href="#encoder">Encoder</a>
-        <a href="#transport">START / STOP / TAP</a>
-        <a href="#source-port-config">SOURCE / PORT / CONFIG</a>
-        <a href="#clock-io">Clock In / Out</a>
-        <a href="#midi-usb">MIDI / USB</a>
+        <a href="#introduction">はじめに</a>
+        <a href="#front-panel">各部の名称と基本操作</a>
+        <a href="#transport">再生とテンポ</a>
+        <a href="#source">クロックソース</a>
+        <a href="#ports">出力ポート</a>
+        <a href="#connections">接続</a>
       </div>
     </nav>
     <div id="toc-backdrop" class="toc-backdrop" hidden></div>
 
     <main>
-      <section class="panel-reader" aria-label="Clockworker front panel">
-        <div id="panel-stage" class="panel-stage" data-focus="overview">
-          <div id="panel-svg" class="panel-art" aria-label="Clockworker front panel"></div>
-          <div class="panel-oled">
-            <canvas id="oled-canvas" width="128" height="32" aria-label="Clockworker 128 by 32 OLED display"></canvas>
+      <article class="document" aria-label="Clockworker ユーザーマニュアル">
+        <header class="document-title" id="introduction">
+          <p class="document-kind">ユーザーマニュアル</p>
+          <h1>Clockworker</h1>
+          <p class="lead">4系統のクロック／トランスポート出力を、ひとつのテンポとひとつの操作系から扱うための Eurorack クロックジェネレーターです。</p>
+        </header>
+
+        <section class="document-section">
+          <h2>はじめに</h2>
+          <p>Clockworker は内部テンポ、外部クロック、USB MIDI、TRS MIDI のいずれかを基準に動作します。選んだクロックを Clock Out A–D、USB MIDI、TRS MIDI へ配信し、START／STOP の状態も同じ基準で扱います。</p>
+          <p>まずは各部の名称と役割を確認してください。下のパネルは、この章を読み進める位置に合わせて注目する箇所を示します。</p>
+        </section>
+
+        <section class="guided-section" id="front-panel" aria-labelledby="front-panel-title">
+          <div class="guided-panel-wrap">
+            <figure class="panel-reader" aria-label="Clockworker フロントパネル">
+              <div id="panel-stage" class="panel-stage" data-focus="overview">
+                <div id="panel-svg" class="panel-art" aria-hidden="true"></div>
+                <div class="panel-oled"><canvas id="oled-canvas" width="128" height="32" aria-label="OLED表示の例"></canvas></div>
+                <span class="encoder-pointer" aria-hidden="true"></span>
+                <span class="encoder-led" aria-hidden="true"></span>
+              </div>
+              <figcaption><span id="screen-name" aria-live="polite">HOME</span><span id="panel-detail" aria-live="polite">全体</span></figcaption>
+            </figure>
           </div>
-        </div>
-        <p id="screen-name" aria-live="polite">HOME</p>
-        <p id="panel-detail" aria-live="polite">各部名称</p>
-      </section>
 
-      <article class="manual-copy" aria-label="Clockworker manual text">
-        <section id="front-panel" class="manual-step is-active" data-scene="home" data-focus="overview">
-          <p class="eyebrow">Front Panel</p>
-          <h2>各部名称</h2>
-          <p>Clockworkerは、4系統のクロック／トランスポート出力を持つEurorackクロックジェネレーターです。パネル上では、OLED、ロータリーエンコーダ、START / STOP / TAP、SOURCE / PORT / CONFIG、Clock In / Action In、Clock Out A-D、TRS MIDI、USB-Cを使います。</p>
+          <div class="guided-copy">
+            <h2 id="front-panel-title">各部の名称と基本操作</h2>
+            <p class="section-lead">パネルは上から入出力、中央にメニュー操作、下部に表示とロータリーエンコーダを配置しています。</p>
+
+            <div class="control-grid">
+              <section id="oled" class="manual-step" data-scene="home" data-focus="oled">
+                <h3>OLED</h3>
+                <p>128 × 32 の OLED には、現在の BPM、クロックソース、SWING の値、選択中のメニューを表示します。SLEEP を ON にしている場合、操作がないとスクリーンセーバーへ移ります。</p>
+              </section>
+              <section id="encoder" class="manual-step" data-scene="home" data-focus="rotary">
+                <h3>ロータリーエンコーダ</h3>
+                <p>HOME 画面では回すと内部テンポを変更します。押すと SWING 画面を開き、もう一度押すと HOME に戻ります。操作中はエンコーダの緑色 LED が点滅します。</p>
+              </section>
+            </div>
+
+            <section id="transport-panel" class="manual-step" data-scene="home" data-focus="transport">
+              <h3>START、STOP、TAP</h3>
+              <p>START は内部クロックの再生を開始します。STOP はトランスポートを停止し、出力をアイドル状態へ戻します。TAP は内部テンポをタップ入力するためのボタンです。</p>
+            </section>
+
+            <section id="menu-panel" class="manual-step" data-scene="source" data-focus="menu">
+              <h3>SOURCE、PORT、CONFIG</h3>
+              <p>SOURCE ではクロックソースを、PORT では Clock Out A–D の出力内容を、CONFIG では本体、入力、MIDI 出力、更新に関する設定を選びます。</p>
+            </section>
+
+            <section id="io-panel" class="manual-step" data-scene="port" data-focus="clock">
+              <h3>Clock In、Action In、Clock Out A–D</h3>
+              <p>Clock In は外部アナログクロックに同期する入力です。Action In は PLAY、STOP、PLAY/STOP、RESET を実行するトリガー入力です。Clock Out A–D はそれぞれ独立してクロックまたはトランスポート出力に設定できます。</p>
+            </section>
+
+            <section id="midi-panel" class="manual-step" data-scene="config" data-focus="midi">
+              <h3>TRS MIDI と USB-C</h3>
+              <p>TRS MIDI と USB MIDI は MIDI Clock とトランスポートを扱います。USB-C は USB MIDI、メンテナンス、ファームウェア更新にも使用します。</p>
+            </section>
+          </div>
         </section>
 
-        <section id="oled" class="manual-step" data-scene="home" data-focus="oled">
-          <p class="eyebrow">Display</p>
-          <h2>OLED</h2>
-          <p>128x32 OLEDには、HOMEのBPM、クロックソース、RUN/STOP状態、各メニュー画面が表示されます。SLEEPがONの場合、操作がないとスクリーンセーバーに入ります。</p>
+        <section class="document-section" id="transport">
+          <h2>再生とテンポ</h2>
+          <h3>内部テンポを変更する</h3>
+          <p>SOURCE で INTERNAL を選び、HOME 画面でロータリーエンコーダを回します。BPM の数値が変化し、接続した出力は新しいテンポに従います。</p>
+          <h3>再生を開始・停止する</h3>
+          <p>START で再生を開始し、STOP で停止します。外部クロックを選んでいるときは、Clockworker は選択した入力のクロックとトランスポートを待機します。</p>
         </section>
 
-        <section id="encoder" class="manual-step" data-scene="swing" data-focus="rotary">
-          <p class="eyebrow">Control</p>
-          <h2>Encoder</h2>
-          <p>ロータリーエンコーダは値の変更、決定、ポート極性の切り替えに使います。HOMEでは回転でBPM、押すとSWING画面へ移動します。</p>
+        <section class="document-section" id="source">
+          <h2>クロックソース</h2>
+          <h3>SOURCE で選べる入力</h3>
+          <p>INTERNAL は本体で設定した BPM を使います。EXTERNAL は Clock In、USB MIDI は USB-C、TRS MIDI は TRS MIDI 入力からクロックとトランスポートを受け取ります。使用する同期元をひとつ選んでください。</p>
         </section>
 
-        <section id="transport" class="manual-step" data-scene="home" data-focus="transport">
-          <p class="eyebrow">Transport</p>
-          <h2>START / STOP / TAP</h2>
-          <p>STARTは内部クロック開始、または外部ソースの待機に使います。STOPはトランスポートを停止し、出力をアイドルへ戻します。TAPは内部BPMをタップ入力するときに使います。</p>
+        <section class="document-section" id="ports">
+          <h2>出力ポート</h2>
+          <h3>Clock Out A–D を設定する</h3>
+          <p>PORT で対象の出力を選び、分周値または RUN、START、STOP、RESET を設定します。各ポートの極性は個別に切り替えられます。</p>
         </section>
 
-        <section id="source-port-config" class="manual-step" data-scene="source" data-focus="menu">
-          <p class="eyebrow">Menu</p>
-          <h2>SOURCE / PORT / CONFIG</h2>
-          <p>SOURCEではInternal、External Clock、USB MIDI、TRS MIDIを選びます。PORTではClock Out A-Dの出力設定、CONFIGでは本体設定、入力設定、MIDI OUT、Updateを扱います。</p>
-        </section>
-
-        <section id="clock-io" class="manual-step" data-scene="port" data-focus="clock">
-          <p class="eyebrow">Clock I/O</p>
-          <h2>Clock In / Action In / Clock Out A-D</h2>
-          <p>Clock Inは外部アナログクロックへ同期する入力です。Action InはPLAY、STOP、PLAY/STOP、RESETを実行する単発トリガー入力です。Clock Out A-Dは独立してクロック出力またはトランスポート出力に設定できます。</p>
-        </section>
-
-        <section id="midi-usb" class="manual-step" data-scene="config" data-focus="midi">
-          <p class="eyebrow">MIDI / USB</p>
-          <h2>TRS MIDI / USB-C</h2>
-          <p>TRS MIDIとUSB MIDIはMIDI Clockとトランスポートを扱います。USB-CはUSB MIDI、メンテナンス、ファームウェア更新にも使います。</p>
+        <section class="document-section" id="connections">
+          <h2>接続</h2>
+          <h3>アナログクロック</h3>
+          <p>外部機器からのクロックは Clock In へ、外部操作用のトリガーは Action In へ接続します。接続前に SOURCE と CONFIG の入力設定を確認してください。</p>
+          <h3>MIDI</h3>
+          <p>USB MIDI または TRS MIDI を使用すると、MIDI Clock とトランスポートを他の機器と同期できます。CONFIG で必要な MIDI 出力を有効にしてください。</p>
         </section>
       </article>
     </main>
-
-    <script src="app.js?v=20260715m"></script>
+    <script src="app.js?v=20260716a"></script>
   </body>
 </html>

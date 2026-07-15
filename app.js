@@ -9,7 +9,6 @@ const panelSvgHost = document.querySelector("#panel-svg");
 const menuButton = document.querySelector("#menu-button");
 const toc = document.querySelector("#toc");
 const tocBackdrop = document.querySelector("#toc-backdrop");
-const manualCopy = document.querySelector(".manual-copy");
 ctx.imageSmoothingEnabled = false;
 const clockSource = document.createElement("canvas");
 const clockSourceCtx = clockSource.getContext("2d", { willReadFrequently: true });
@@ -39,7 +38,7 @@ const imageNames = [
 
 const images = Object.fromEntries(imageNames.map((name) => {
   const image = new Image();
-  image.src = `../icons/${name}.png`;
+  image.src = `icons/${name}.png`;
   return [name, image];
 }));
 
@@ -61,6 +60,7 @@ const state = {
   knobTurn: 0,
   readerScene: "home",
   readerFocus: "overview",
+  demoBpmAt: 0,
 };
 
 const sources = [
@@ -363,19 +363,6 @@ const focusDetails = {
   midi: "TRS MIDI / USB-C",
 };
 
-const panelViewBoxWidth = 171.92;
-const oledRotaryBlockWidth = 121.58;
-
-const focusOrigins = {
-  overview: [50, 49, 1],
-  oled: [50.55, 70.84, "fit-wide", oledRotaryBlockWidth],
-  rotary: [50.55, 70.84, "fit-wide", oledRotaryBlockWidth],
-  transport: [50, 85, 1.8],
-  menu: [50, 58, 1.8],
-  clock: [50, 21, 1.8],
-  midi: [52, 42, 1.8],
-};
-
 const svgFocusGroups = {
   oled: ["oled"],
   rotary: ["rotaryknob"],
@@ -422,40 +409,11 @@ function setScene(scene, focus) {
   state.readerFocus = focus;
   if (!unchanged) scenePreset(scene);
   panelStage.dataset.focus = focus;
-  const [x, y, scaleTarget, blockWidth] = focusOrigins[focus] || focusOrigins.overview;
-  const scale = panelScaleForFocus(scaleTarget, blockWidth);
-  const { panX, panY } = panelPanForFocus(x, y, scale);
-  panelStage.style.setProperty("--panel-pan-x", `${panX}px`);
-  panelStage.style.setProperty("--panel-pan-y", `${panY}px`);
-  panelStage.style.setProperty("--panel-scale", scale);
+  panelStage.classList.toggle("is-tempo-demo", focus === "rotary");
   panelDetail.textContent = focusDetails[focus] || "各部名称";
   updateSvgFocus(focus);
 }
 
-function panelScaleForFocus(scaleTarget, blockWidth) {
-  if (scaleTarget !== "fit-wide") return scaleTarget;
-  const panelRect = document.querySelector(".panel-reader").getBoundingClientRect();
-  const width = panelStage.offsetWidth;
-  const renderedBlockWidth = width * blockWidth / panelViewBoxWidth;
-  const targetWidth = panelRect.width * 0.9;
-  return Math.round((targetWidth / renderedBlockWidth) * 100) / 100;
-}
-
-function panelPanForFocus(xPercent, yPercent, scale) {
-  const panelRect = document.querySelector(".panel-reader").getBoundingClientRect();
-  const width = panelStage.offsetWidth;
-  const height = panelStage.offsetHeight;
-  const stageLeft = panelStage.offsetLeft;
-  const stageTop = panelStage.offsetTop;
-  const originX = stageLeft + width / 2;
-  const originY = stageTop + height / 2;
-  const focusX = stageLeft + width * xPercent / 100;
-  const focusY = stageTop + height * yPercent / 100;
-  return {
-    panX: Math.round(panelRect.left + panelRect.width / 2 - (originX + (focusX - originX) * scale)),
-    panY: Math.round(panelRect.top + panelRect.height / 2 - (originY + (focusY - originY) * scale)),
-  };
-}
 
 function preparePanelSvg() {
   panelSvg = panelSvgHost.querySelector("svg");
@@ -477,7 +435,7 @@ function preparePanelSvg() {
 
 async function loadPanelSvg() {
   try {
-    const response = await fetch("panel.svg?v=20260715m");
+    const response = await fetch("panel.svg?v=20260716a");
     panelSvgHost.innerHTML = await response.text();
     preparePanelSvg();
   } catch {
@@ -503,7 +461,13 @@ function animatePanel(now) {
   const knob = panelSvg.querySelector('[data-name="rotaryknob"]');
   if (!knob) return;
   const focusIsKnob = state.readerFocus === "rotary";
-  const angle = focusIsKnob ? Math.round(Math.sin(now / 420) * 18) : 0;
+  if (focusIsKnob && now - state.demoBpmAt > 900) {
+    state.previousBpm = state.bpm;
+    state.bpm = state.bpm >= 124 ? 120 : state.bpm + 1;
+    state.bpmAnimationAt = now;
+    state.demoBpmAt = now;
+  }
+  const angle = focusIsKnob ? Math.round((now / 18) % 360) : 0;
   knob.style.transform = `rotate(${angle}deg)`;
 }
 
@@ -516,13 +480,12 @@ function activateStep(step) {
 
 function syncSceneFromScroll() {
   sceneSyncQueued = false;
-  const area = manualCopy.getBoundingClientRect();
-  const targetY = area.top + Math.min(96, area.height * 0.32);
+  const targetY = Math.min(260, window.innerHeight * .42);
   let best = steps[0];
   let bestDistance = Infinity;
   steps.forEach((step) => {
     const rect = step.getBoundingClientRect();
-    if (rect.bottom < area.top + 12) return;
+    if (rect.bottom < 0) return;
     const distance = Math.abs(rect.top - targetY);
     if (distance < bestDistance) {
       best = step;
@@ -537,41 +500,14 @@ function queueSceneSync() {
   requestAnimationFrame(syncSceneFromScroll);
 }
 
-function stepFromHash() {
-  if (!location.hash) return null;
-  const id = decodeURIComponent(location.hash.slice(1));
-  const target = document.getElementById(id);
-  return target?.classList.contains("manual-step") ? target : null;
-}
-
-function scrollToHashStep(behavior = "auto") {
-  const target = stepFromHash();
-  if (!target) return false;
-  const index = steps.indexOf(target);
-  const gap = parseFloat(getComputedStyle(manualCopy).rowGap) || 0;
-  const top = steps.slice(0, index).reduce((sum, step) => sum + step.getBoundingClientRect().height + gap, 0);
-  manualCopy.scrollTo({ top, behavior });
-  activateStep(target);
-  setTimeout(queueSceneSync, behavior === "smooth" ? 520 : 80);
-  return true;
-}
-
 menuButton.addEventListener("click", () => openToc(!toc.classList.contains("is-open")));
 tocBackdrop.addEventListener("click", () => openToc(false));
-toc.querySelectorAll("a").forEach((link) => link.addEventListener("click", (event) => {
-  event.preventDefault();
-  const href = link.getAttribute("href");
-  if (href) history.pushState(null, "", href);
-  scrollToHashStep("smooth");
-  openToc(false);
-}));
-manualCopy.addEventListener("scroll", queueSceneSync, { passive: true });
+toc.querySelectorAll("a").forEach((link) => link.addEventListener("click", () => openToc(false)));
+window.addEventListener("scroll", queueSceneSync, { passive: true });
 window.addEventListener("resize", queueSceneSync);
-window.addEventListener("hashchange", () => scrollToHashStep("auto"));
+window.addEventListener("hashchange", queueSceneSync);
 loadPanelSvg();
-if (!scrollToHashStep("auto")) {
-  setScene("home", "overview");
-  queueSceneSync();
-}
+setScene("home", "overview");
+queueSceneSync();
 
 Promise.all(Object.values(images).map((image) => image.decode?.().catch(() => {}))).finally(() => requestAnimationFrame(render));
