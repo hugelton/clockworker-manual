@@ -4,11 +4,12 @@ const canvas = document.querySelector("#oled-canvas");
 const ctx = canvas.getContext("2d", { alpha: false });
 const panelStage = document.querySelector("#panel-stage");
 const panelSvgHost = document.querySelector("#panel-svg");
+const panelOled = document.querySelector(".panel-oled");
+const panelCopy = document.querySelector(".panel-copy");
 const menuButton = document.querySelector("#menu-button");
 const langButton = document.querySelector("#lang-button");
 const toc = document.querySelector("#toc");
 const tocBackdrop = document.querySelector("#toc-backdrop");
-const panelMarkers = [...document.querySelectorAll("[data-marker-focus]")];
 ctx.imageSmoothingEnabled = false;
 const clockSource = document.createElement("canvas");
 const clockSourceCtx = clockSource.getContext("2d", { willReadFrequently: true });
@@ -377,6 +378,10 @@ const svgFocusGroups = {
   rotary: ["rotaryknob"],
   transport: ["playbutton", "stopbutton", "tapbutton"],
   menu: ["soucebutton", "portsbutton", "configbutton"],
+  outputs: ["outA", "outB", "outC", "outD"],
+  inputs: ["inClock", "inAction"],
+  usb: ["USB"],
+  "trs-midi": ["midi-in", "midi-out"],
   clock: ["inClock", "inAction", "outA", "outB", "outC", "outD"],
   midi: ["midi-in", "midi-out", "USB"],
 };
@@ -445,9 +450,6 @@ function setScene(scene, focus) {
   panelStage.style.setProperty("--panel-pan-x", "0px");
   panelStage.style.setProperty("--panel-pan-y", "0px");
   panelStage.style.setProperty("--panel-scale", "1");
-  panelMarkers.forEach((marker) => {
-    marker.classList.toggle("is-current", focus === "overview" || marker.dataset.markerFocus === focus);
-  });
   updateSvgFocus(focus);
 }
 
@@ -471,7 +473,7 @@ function preparePanelSvg() {
 
 async function loadPanelSvg() {
   try {
-    const response = await fetch("panel.svg?v=20260716d");
+    const response = await fetch("panel.svg?v=20260716p");
     panelSvgHost.innerHTML = await response.text();
     preparePanelSvg();
   } catch {
@@ -480,12 +482,20 @@ async function loadPanelSvg() {
 }
 
 function updateSvgFocus(focus) {
-  if (!panelSvg) return;
   const activeNames = new Set(svgFocusGroups[focus] || []);
   const shouldDim = activeNames.size > 0;
+  const oledActive = activeNames.has("oled");
+  panelOled.style.opacity = !shouldDim || oledActive ? "1" : ".2";
+  panelOled.style.filter = oledActive ? "drop-shadow(0 0 2px rgba(0,0,0,.38))" : "none";
+  if (!panelSvg) return;
   panelParts.forEach((part) => {
     const name = part.dataset.name;
     if (name === "レイヤー 1" || name === "レイヤー 2") return;
+    if (name === "panel-print") {
+      part.style.opacity = "1";
+      part.style.filter = "none";
+      return;
+    }
     const active = activeNames.has(name);
     part.style.opacity = !shouldDim || active ? "1" : ".2";
     part.style.filter = active ? "drop-shadow(0 0 2px rgba(0,0,0,.38))" : "none";
@@ -506,6 +516,7 @@ const tempoStep = document.querySelector('[data-demo="tempo"]');
 let sceneSyncQueued = false;
 function activateStep(step) {
   steps.forEach((item) => item.classList.toggle("is-active", item === step));
+  panelCopy.classList.toggle("is-focusing", panelCopy.contains(step));
   state.tempoDemo = step.dataset.demo === "tempo";
   panelStage.dataset.demo = state.tempoDemo ? "tempo" : "";
   setScene(step.dataset.scene || "home", step.dataset.focus || "overview");
@@ -513,7 +524,17 @@ function activateStep(step) {
 
 function syncSceneFromScroll() {
   sceneSyncQueued = false;
-  const targetY = Math.min(window.innerHeight * .2, 112);
+  let targetY = Math.min(window.innerHeight * .2, 112);
+  if (window.innerWidth <= 759) {
+    const panelReader = document.querySelector(".panel-reader");
+    const panelRect = panelReader?.getBoundingClientRect();
+    const headerHeight = parseFloat(
+      getComputedStyle(document.documentElement).getPropertyValue("--header-height")
+    ) || 56;
+    if (panelRect && panelRect.top <= headerHeight + 1 && panelRect.bottom > headerHeight) {
+      targetY = Math.min(window.innerHeight - 80, panelRect.bottom + 24);
+    }
+  }
   let best = steps[0];
   let bestDistance = Infinity;
   steps.forEach((step) => {

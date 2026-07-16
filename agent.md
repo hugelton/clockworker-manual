@@ -24,8 +24,8 @@ This repository is the deployable, bilingual Clockworker user manual. The local 
 - The header language button stores the selection in `localStorage("cw-lang")`.
 - `section.manual-step` values in `data-scene` and `data-focus` control the OLED scene and highlighted panel region.
 - Hash links must work on first load as well as from the table of contents.
-- On narrow screens the panel belongs in the document flow; it must not remain sticky over the instructions.
-- Keep cache-busting values synchronized in `index.html` and the `panel.svg` URL in `app.js`. Current value: `20260716d`.
+- On narrow screens, keep a compact, fully scaled panel sticky below the header so the focused part remains visible while its description scrolls.
+- Keep cache-busting values synchronized in `index.html` and the `panel.svg` URL in `app.js`. Current value: `20260716p`.
 
 ## Verification
 
