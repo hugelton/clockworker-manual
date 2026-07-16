@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Clockworker ユーザーマニュアル">
     <title>Clockworker ユーザーマニュアル</title>
-    <link rel="stylesheet" href="style.css?v=20260716d">
+    <link rel="stylesheet" href="style.css?v=20260716p">
   </head>
   <body>
     <header class="site-header">
@@ -21,34 +21,58 @@
       <div class="toc-panel">
         <p data-en="Contents">目次</p>
 
-        <p class="toc-group" data-en="Getting Started">使い始める</p>
-        <a href="#about" data-en="About Clockworker">Clockworkerについて</a>
-        <a href="#safety" data-en="Safety">安全上の注意</a>
-        <a href="#quickstart-internal" data-en="Internal Clock Quick Start">内部クロックのクイックスタート</a>
-        <a href="#quickstart-external" data-en="External Sync Quick Start">外部同期のクイックスタート</a>
-        <a href="#quickstart-midi" data-en="MIDI Clock Quick Start">MIDI Clockのクイックスタート</a>
+        <p class="toc-group" data-en="1. Introduction">1. はじめに</p>
+        <a href="#about-title" data-en="1.1 About Clockworker">1.1 Clockworkerについて</a>
+        <a href="#features" data-en="1.2 Features">1.2 特徴</a>
 
-        <p class="toc-group" data-en="Controls">操作</p>
-        <a href="#front-panel" data-en="Front Panel">フロントパネル</a>
-        <a href="#oled" data-en="OLED Display">OLED表示</a>
-        <a href="#encoder" data-en="Rotary Encoder">ロータリーエンコーダ</a>
-        <a href="#transport" data-en="START / STOP / TAP">START / STOP / TAP</a>
-        <a href="#source-port-config" data-en="SOURCE / PORT / CONFIG">SOURCE / PORT / CONFIG</a>
-        <a href="#ui-home" data-en="HOME and SWING">HOMEとSWING</a>
+        <p class="toc-group" data-en="2. Safety">2. 安全上の注意</p>
+        <a href="#safety" data-en="2.1 Warnings and Cautions">2.1 警告・注意</a>
 
-        <p class="toc-group" data-en="Clock and MIDI">クロックとMIDI</p>
-        <a href="#source-internal" data-en="Clock Sources">クロックソース</a>
-        <a href="#outputs-ports" data-en="Clock Outputs">クロック出力</a>
-        <a href="#midi-realtime" data-en="MIDI Clock and Transport">MIDI Clockとトランスポート</a>
-        <a href="#config" data-en="CONFIG">CONFIG</a>
-        <a href="#saving" data-en="Saving Settings">設定の保存</a>
+        <p class="toc-group" data-en="3. Legal, Warranty, and Intellectual Property">3. 法令・保証・知的財産</p>
+        <a href="#warranty" data-en="3.2 Warranty and Support">3.2 保証およびサポート</a>
+        <a href="#intellectual-property" data-en="3.3 Intellectual Property and Copyright">3.3 知的財産権および著作権</a>
 
-        <p class="toc-group" data-en="Support">サポート</p>
-        <a href="#firmware-update" data-en="Firmware Update">ファームウェア更新</a>
-        <a href="#troubleshooting" data-en="Troubleshooting">トラブルシューティング</a>
-        <a href="#specifications" data-en="Specifications">仕様</a>
-        <a href="#faq" data-en="FAQ">よくある質問</a>
-        <a href="#revision" data-en="Manual Information">マニュアル情報</a>
+        <p class="toc-group" data-en="4. Controls and Connections">4. 各部の名称</p>
+        <a href="#front-panel" data-en="4.1 Controls and Connections">4.1 各部の名称</a>
+        <a href="#clock-io" data-en="4.3 Inputs and Outputs">4.3 入出力一覧</a>
+
+        <p class="toc-group" data-en="5. Quick Start">5. クイックスタート</p>
+        <a href="#quickstart-internal" data-en="5.1 Use the Internal Clock">5.1 内部クロックで使用する</a>
+        <a href="#quickstart-external" data-en="5.2 Sync to an External Clock">5.2 外部クロックへ同期する</a>
+        <a href="#quickstart-midi" data-en="5.3 Use USB or TRS MIDI Clock">5.3 USB／TRS MIDIクロックを使用する</a>
+
+        <p class="toc-group" data-en="6. Basic Operation">6. 基本操作</p>
+        <a href="#ui-home" data-en="6.1 HOME">6.1 HOME</a>
+        <a href="#source-internal" data-en="6.2 SOURCE">6.2 SOURCE</a>
+        <a href="#outputs-ports" data-en="6.3 PORT">6.3 PORT</a>
+        <a href="#config" data-en="6.4 CONFIG">6.4 CONFIG</a>
+        <a href="#transport" data-en="6.5 PLAY / STOP">6.5 PLAY／STOP</a>
+        <a href="#clock-io" data-en="6.6 Action In">6.6 Action In</a>
+
+        <p class="toc-group" data-en="7. Functions">7. 機能</p>
+        <a href="#outputs-ports" data-en="7.1 Clock Outputs">7.1 クロックアウト</a>
+        <a href="#source-internal" data-en="7.2 Clock Inputs and Sources">7.2 クロック入力</a>
+        <a href="#midi-realtime" data-en="7.3 MIDI and Transport">7.3 MIDI／トランスポート</a>
+        <a href="#config" data-en="7.4 PPQN and Polarity">7.4 PPQN／極性</a>
+        <a href="#ui-home" data-en="7.5 SWING">7.5 SWING</a>
+
+        <p class="toc-group" data-en="8. Firmware">8. ファームウェア</p>
+        <a href="#firmware-update" data-en="8.1 Update">8.1 アップデート</a>
+
+        <p class="toc-group" data-en="9. Specifications">9. 本体仕様</p>
+        <a href="#specifications" data-en="9. Specifications">9. 本体仕様</a>
+
+        <p class="toc-group" data-en="10. MIDI Implementation">10. MIDI Implementation</p>
+        <a href="#midi-realtime" data-en="10. MIDI Implementation">10. MIDI Implementation</a>
+
+        <p class="toc-group" data-en="11. Troubleshooting">11. トラブルシューティング</p>
+        <a href="#troubleshooting" data-en="11. Troubleshooting">11. トラブルシューティング</a>
+
+        <p class="toc-group">12. FAQ</p>
+        <a href="#faq">12. FAQ</a>
+
+        <p class="toc-group" data-en="13. Revision History">13. 改訂履歴</p>
+        <a href="#revision" data-en="13. Revision History">13. 改訂履歴</a>
       </div>
     </nav>
     <div id="toc-backdrop" class="toc-backdrop" hidden></div>
@@ -67,12 +91,12 @@
 
         <section class="chapter" aria-labelledby="about-title">
           <h2 id="about-title" data-en="About Clockworker">Clockworkerについて</h2>
-          <div class="manual-step is-active" data-scene="home" data-focus="overview">
+          <div id="features" class="manual-step is-active" data-scene="home" data-focus="overview">
             <p data-en="Clockworker runs from its own internal tempo, or follows an external analog clock, USB MIDI Clock, or TRS MIDI Clock. It distributes the selected timing to Clock Out A-D and to the enabled MIDI outputs.">Clockworkerは内部テンポで動作するほか、外部アナログクロック、USB MIDI Clock、TRS MIDI Clockに同期できます。選択したタイミングをClock Out A〜Dと、有効にしたMIDI出力へ送ります。</p>
             <ul class="feature-list">
               <li data-en="Four independently configurable Clock Outs">個別に設定できる4系統のClock Out</li>
               <li data-en="30.0-250.0 BPM internal tempo">30.0〜250.0 BPMの内部テンポ</li>
-              <li data-en="Per-output clock division, pulse width, polarity, and transport functions">出力ごとの分周、パルス幅、極性、トランスポート設定</li>
+              <li data-en="Per-output clock division, polarity, and transport functions">出力ごとの分周、極性、トランスポート設定</li>
               <li data-en="Analog Clock In, Action In, USB MIDI, and TRS MIDI">Clock In、Action In、USB MIDI、TRS MIDI</li>
             </ul>
           </div>
@@ -92,6 +116,53 @@
           </div>
         </section>
 
+        <section id="legal" class="chapter" aria-labelledby="legal-title">
+          <h2 id="legal-title" data-en="Legal, Warranty, and Intellectual Property">法令・保証・知的財産</h2>
+
+          <section id="warranty" class="manual-step" data-scene="home" data-focus="overview">
+            <h3 data-en="Warranty and Support">保証およびサポート</h3>
+
+            <h4 data-en="Warranty Period">保証期間</h4>
+            <p data-en="Hügelton Instruments will endeavor to accept repair requests and maintain service parts for this product for one year from the date of purchase. Service may not be available due to disasters, the discontinuation of parts, or other circumstances beyond our control.">Hügelton Instrumentsは、本製品について購入日から1年間、修理受付および保守部材の確保に努めます。ただし、災害、部品供給終了、その他不可抗力により対応できない場合があります。</p>
+            <p data-en="For failures that occur under normal use within one month of purchase, Hügelton Instruments may, at its discretion, repair the product free of charge, replace the product, or refund the purchase price.">購入日から1か月以内に、通常の使用状態で発生した故障については、Hügelton Instrumentsの判断により、無償修理、製品交換、または購入代金の返金を行います。</p>
+
+            <h4 data-en="Exclusions">保証対象外</h4>
+            <p data-en="The warranty does not apply in the following cases.">以下の場合は保証対象外となります。</p>
+            <ul>
+              <li data-en="The user has modified, disassembled, or repaired the product">ユーザーによる改造、分解、修理を行った場合</li>
+              <li data-en="An issue arises from compatibility or operating specifications involving another company's product">他社製品との互換性または動作仕様に起因する事象</li>
+              <li data-en="The product was not used, maintained, or stored as described in this manual">本書に記載された使用方法、保守方法、保管方法に従わなかった場合</li>
+              <li data-en="A failure was caused by dropping, water exposure, overvoltage, incorrect wiring, static electricity, or similar causes">落下、水濡れ、過電圧、誤配線、静電気等による故障</li>
+              <li data-en="An initial defect is reported more than one month after purchase">購入後1か月を経過した初期不良の申告</li>
+              <li data-en="Damage to third-party products, software, data, or other property results from use of this product">本製品の使用によって生じた他社製品、ソフトウェア、データ等への損害</li>
+            </ul>
+
+            <h4 data-en="Repairs">修理について</h4>
+            <p data-en="This does not prevent users from repairing the product or replacing parts themselves.">ユーザー自身による修理および部品交換を妨げるものではありません。</p>
+            <p data-en="However, Hügelton Instruments cannot provide an operating warranty or warranty service for a product that has been repaired or modified by the user, had parts replaced by the user, or had its circuitry changed.">ただし、ユーザーによる修理、改造、部品交換、または回路変更を行った製品については、Hügelton Instrumentsは動作保証および保証サービスを提供できません。</p>
+          </section>
+
+          <section id="intellectual-property" class="manual-step" data-scene="home" data-focus="overview">
+            <h3 data-en="Intellectual Property and Copyright">知的財産権および著作権</h3>
+            <p data-en="Copyright and other intellectual property rights in the circuit design, logo, product design, documentation, product images, firmware, graphics contained in the firmware, and related materials belong to Hügelton Instruments or their respective rights holders.">本製品の回路設計、ロゴ、製品デザイン、ドキュメント、製品画像、ファームウェア、ファームウェア内のグラフィック、および関連資料に関する著作権その他の知的財産権は、Hügelton Instrumentsまたは各権利者に帰属します。</p>
+            <p data-en="Except where permitted by law, these materials may not be reproduced, modified, sold, redistributed, lent, transmitted to the public, published, or used as derivative works without permission from Hügelton Instruments.">法令により認められる場合を除き、Hügelton Instrumentsの許可なく複製、改変、販売、再配布、貸与、公衆送信、公開、または派生物として利用することを禁止します。</p>
+
+            <h4 data-en="Firmware">ファームウェアについて</h4>
+            <p data-en="This does not prevent reverse engineering of the firmware for analysis, research, debugging, interoperability, security research, repair, or other purposes permitted by law.">ファームウェアの解析、調査、デバッグ、相互運用性の確保、セキュリティ研究、修理、その他法令で認められる目的でのリバースエンジニアリングを妨げるものではありません。</p>
+            <p data-en="However, the following actions are prohibited without permission from Hügelton Instruments.">ただし、Hügelton Instrumentsの許可なく、以下の行為を禁止します。</p>
+            <ul>
+              <li data-en="Redistributing, selling, or publishing the firmware itself">ファームウェア本体の再配布、販売または公開</li>
+              <li data-en="Distributing a restorable firmware image">復元可能なファームウェアイメージの配布</li>
+              <li data-en="Publishing or selling internal data, symbol information, firmware dumps, or other internal implementation information obtained through analysis">解析によって取得した内部データ、シンボル情報、ファームウェアダンプその他の内部実装情報を公開または販売すること</li>
+              <li data-en="Providing a commercial service or product that uses this product's firmware or copyrighted works">本製品のファームウェアまたは著作物を利用した商業サービスまたは製品を提供すること</li>
+            </ul>
+
+            <h4 data-en="Third-Party Rights">第三者の権利</h4>
+            <p data-en="When using this product, take care not to infringe any third party's copyright, trademark, patent, or other intellectual property rights.">本製品を利用する際は、第三者の著作権、商標権、特許権その他の知的財産権を侵害しないようご注意ください。</p>
+            <p data-en="Unless otherwise required by law, Hügelton Instruments is not responsible for disputes with third parties arising from use of this product.">本製品の利用に起因して第三者との紛争が生じた場合、法令に別段の定めがある場合を除き、Hügelton Instrumentsは責任を負いません。</p>
+          </section>
+        </section>
+
         <section class="chapter quickstart" aria-labelledby="quickstart-title">
           <h2 id="quickstart-title" data-en="Quick Start">クイックスタート</h2>
 
@@ -105,9 +176,9 @@
             <ol>
               <li data-en="With the case switched off, connect Clock Out A to the receiving module's Clock In.">ケースの電源を切った状態で、Clock Out Aを受け側モジュールのClock Inへ接続します。</li>
               <li data-en="Switch on the case and confirm that HOME appears in STOP state.">ケースの電源を入れ、HOMEがSTOP状態で表示されることを確認します。</li>
-              <li data-en="Press SOURCE, select INTERNAL with the encoder, then press SOURCE again to confirm.">SOURCEを押し、エンコーダでINTERNALを選び、もう一度SOURCEを押して確定します。</li>
-              <li data-en="On HOME, turn the encoder to set BPM.">HOMEでエンコーダを回してBPMを設定します。</li>
-              <li data-en="Press START.">STARTを押します。</li>
+              <li data-en="Press SOURCE, select INTERNAL with the dial, then press SOURCE again to confirm.">SOURCEを押し、ダイヤルでINTERNALを選び、もう一度SOURCEを押して確定します。</li>
+              <li data-en="On HOME, turn the dial to set BPM.">HOMEでダイヤルを回してBPMを設定します。</li>
+              <li data-en="Press PLAY.">PLAYを押します。</li>
             </ol>
           </section>
 
@@ -121,8 +192,8 @@
             <ol>
               <li data-en="Stop the external clock source, then connect its Clock Out to Clockworker's Clock In.">外部クロック源を停止し、Clock OutをClockworkerのClock Inへ接続します。</li>
               <li data-en="In CONFIG, match INPUT CLOCK PPQN and INPUT CLOCK POLARITY to the source.">CONFIGでINPUT CLOCK PPQNとINPUT CLOCK POLARITYを送信元に合わせます。</li>
-              <li data-en="In SOURCE, select EXTERNAL.">SOURCEでEXTERNALを選択します。</li>
-              <li data-en="Press START to arm Clockworker, then start the external clock source.">STARTを押して待機状態にしてから、外部クロック源を再生します。</li>
+              <li data-en="In SOURCE, select EXT CLOCK.">SOURCEでEXT CLOCKを選択します。</li>
+              <li data-en="Press PLAY to arm Clockworker, then start the external clock source.">PLAYを押して待機状態にしてから、外部クロック源を再生します。</li>
             </ol>
           </section>
 
@@ -137,71 +208,88 @@
               <li data-en="Set SOURCE to INTERNAL.">SOURCEをINTERNALにします。</li>
               <li data-en="In CONFIG, turn on USB MIDI OUT or TRS MIDI OUT.">CONFIGでUSB MIDI OUTまたはTRS MIDI OUTをONにします。</li>
               <li data-en="Set the receiving device to follow external MIDI Clock.">受け側機器を外部MIDI Clockへ同期する設定にします。</li>
-              <li data-en="Press START to send Start and MIDI Clock; press STOP to send Stop.">STARTを押すとStartとMIDI Clockを送信し、STOPを押すとStopを送信します。</li>
+              <li data-en="Press PLAY to send Start and MIDI Clock; press STOP to send Stop.">PLAYを押すとStartとMIDI Clockを送信し、STOPを押すとStopを送信します。</li>
             </ol>
           </section>
         </section>
 
-        <section class="chapter" aria-labelledby="front-panel-title">
-          <h2 id="front-panel-title" data-en="Front Panel">フロントパネル</h2>
-          <section class="panel-explainer" aria-label="フロントパネルの各部名称" data-en-aria="Front panel controls and connections">
+        <section class="chapter" aria-labelledby="front-panel">
+          <h2 id="front-panel" data-en="Controls and Connections">各部の名称</h2>
+          <section class="panel-explainer" aria-label="各部の名称" data-en-aria="Controls and connections">
             <aside class="panel-reader" aria-label="Clockworkerフロントパネル" data-en-aria="Clockworker front panel">
               <div id="panel-stage" class="panel-stage" data-focus="overview">
                 <div id="panel-svg" class="panel-art" aria-hidden="true"></div>
                 <div class="panel-oled">
-                  <canvas id="oled-canvas" width="128" height="32" aria-label="OLED表示例" data-en-aria="Example OLED display"></canvas>
+                  <canvas id="oled-canvas" width="128" height="32" aria-label="ディスプレイの表示例" data-en-aria="Example display"></canvas>
                 </div>
-                <span class="rotary-led" aria-hidden="true"></span>
-                <span class="panel-marker marker-clock" data-marker-focus="clock" aria-hidden="true">1</span>
-                <span class="panel-marker marker-midi" data-marker-focus="midi" aria-hidden="true">2</span>
-                <span class="panel-marker marker-menu" data-marker-focus="menu" aria-hidden="true">3</span>
-                <span class="panel-marker marker-oled" data-marker-focus="oled" aria-hidden="true">4</span>
-                <span class="panel-marker marker-rotary" data-marker-focus="rotary" aria-hidden="true">5</span>
-                <span class="panel-marker marker-transport" data-marker-focus="transport" aria-hidden="true">6</span>
               </div>
             </aside>
 
             <div class="panel-copy">
-              <section id="front-panel" class="manual-step" data-scene="home" data-focus="overview">
-                <h3 data-en="Controls and Connections">各部の名称</h3>
-                <ol class="panel-legend">
-                  <li><span>1</span><strong>Clock In / Action In / Clock Out A–D</strong></li>
-                  <li><span>2</span><strong>TRS MIDI IN / OUT / USB-C</strong></li>
-                  <li><span>3</span><strong>SOURCE / PORT / CONFIG</strong></li>
-                  <li><span>4</span><strong>OLED</strong></li>
-                  <li><span>5</span><strong data-en="Rotary encoder">ロータリーエンコーダ</strong></li>
-                  <li><span>6</span><strong>START / STOP / TAP</strong></li>
-                </ol>
+              <section id="panel-clock-outputs" class="manual-step" data-scene="port" data-focus="outputs">
+                <h3 data-en="Clock Outputs">クロックアウト</h3>
+                <p data-en="Clock Out A-D can each be configured independently as a clock output or transport output.">Clock Out A〜Dは、それぞれ独立してクロック出力またはトランスポート出力に設定できます。</p>
               </section>
 
-              <section id="oled" class="manual-step" data-scene="home" data-focus="oled">
-                <h3 data-en="OLED Display">OLED表示</h3>
-                <p data-en="HOME shows BPM, the selected source, RUN/STOP state, and a summary of outputs A-D. SOURCE, PORT, SWING, and CONFIG show the setting currently being edited.">HOMEにはBPM、選択中のソース、RUN/STOP状態、A〜D出力の概要を表示します。SOURCE、PORT、SWING、CONFIGでは、現在変更している設定を表示します。</p>
+              <section id="clock-io" class="manual-step" data-scene="config" data-focus="inputs">
+                <h3 data-en="Clock Input and Action Input">クロック入力／アクション入力</h3>
+                <p data-en="Clock In receives an external analog clock. Action In accepts a trigger for PLAY, STOP, PLAY-STOP, or RESET.">Clock Inは外部アナログクロックを受けます。Action InはPLAY、STOP、PLAY-STOP、RESETを実行するトリガー入力です。</p>
               </section>
 
-              <section id="encoder" class="manual-step" data-scene="home" data-focus="rotary" data-demo="tempo">
-                <h3 data-en="Rotary Encoder">ロータリーエンコーダ</h3>
-                <p data-en="Turn to change a value or selection. Press to confirm or toggle the displayed setting. On HOME, pressing opens SWING; on PORT, pressing toggles RISE/FALL. Turning while pressed adjusts Swing on HOME or Pulse Width on PORT.">回すと値や選択肢を変更し、押すと表示中の設定を確定または切り替えます。HOMEで押すとSWINGを開き、PORTで押すとRISE/FALLを切り替えます。押しながら回すと、HOMEではSwing、PORTではPulse Widthを調整します。</p>
+              <section id="midi-usb" class="manual-step" data-scene="config" data-focus="usb">
+                <h3 data-en="USB Port">USBポート</h3>
+                <p data-en="The USB port is USB 2.0 Type-C. It is used for USB MIDI and firmware updates.">USBポートはUSB 2.0 Type-Cです。USB MIDIとファームウェア更新に使用します。</p>
               </section>
 
-              <section id="transport" class="manual-step" data-scene="home" data-focus="transport">
-                <h3>START / STOP / TAP</h3>
-                <p data-en="START starts the Internal Clock or arms the selected external source. STOP stops transport and returns outputs to idle. TAP sets the Internal Clock tempo by tapping in time.">STARTは内部クロックを開始するか、選択した外部ソースの待機状態にします。STOPはトランスポートを停止し、出力をアイドル状態へ戻します。TAPは一定の間隔で押して内部テンポを設定します。</p>
+              <section id="trs-midi" class="manual-step" data-scene="config" data-focus="trs-midi">
+                <h3>TRS MIDI IN／OUT</h3>
+                <p data-en="TRS MIDI IN and OUT carry MIDI Clock and transport messages.">TRS MIDI IN／OUTは、MIDI Clockとトランスポートメッセージを扱います。</p>
               </section>
 
               <section id="source-port-config" class="manual-step" data-scene="source" data-focus="menu">
-                <h3>SOURCE / PORT / CONFIG</h3>
-                <p data-en="SOURCE selects the clock source. PORT opens the settings for Clock Out A-D and advances through the four ports. CONFIG opens system, input, MIDI output, and firmware update settings.">SOURCEはクロックソースを選択します。PORTはClock Out A〜Dの設定を開き、押すたびに4つのポートを移動します。CONFIGは本体、入力、MIDI出力、ファームウェア更新の設定を開きます。</p>
+                <h3 data-en="Function Buttons: SOURCE / CONFIG / PORT">ファンクションボタン：SOURCE／CONFIG／PORT</h3>
+                <div class="control-block-grid">
+                  <section class="control-block">
+                    <h4>SOURCE</h4>
+                    <p data-en="Selects the clock source.">クロックソースを選択します。</p>
+                  </section>
+                  <section class="control-block">
+                    <h4>CONFIG</h4>
+                    <p data-en="Opens system, input, MIDI output, and firmware update settings.">本体、入力、MIDI出力、ファームウェア更新の設定を開きます。</p>
+                  </section>
+                  <section class="control-block">
+                    <h4>PORT</h4>
+                    <p data-en="Opens Clock Out A-D settings. Each press advances to the next port.">Clock Out A〜Dの設定を開きます。押すたびに次のポートへ移動します。</p>
+                  </section>
+                </div>
               </section>
 
-              <section id="clock-io" class="manual-step" data-scene="port" data-focus="clock">
-                <h3 data-en="Clock and Action Connections">クロックとActionの端子</h3>
-                <p data-en="Clock In receives an external analog clock. Action In accepts a trigger for PLAY, STOP, PLAY/STOP, or RESET. Clock Out A-D can each be configured as a clock or transport output.">Clock Inは外部アナログクロックを受けます。Action InはPLAY、STOP、PLAY/STOP、RESETを実行するトリガー入力です。Clock Out A〜Dは、それぞれクロック出力またはトランスポート出力に設定できます。</p>
+              <section id="oled" class="manual-step" data-scene="home" data-focus="oled">
+                <h3 data-en="Display">ディスプレイ</h3>
+                <p data-en="The display shows BPM, the selected source, RUN/STOP state, and a summary of outputs A-D on HOME. SOURCE, PORT, SWING, and CONFIG show the setting currently being edited.">ディスプレイのHOME画面にはBPM、選択中のソース、RUN/STOP状態、A〜D出力の概要を表示します。SOURCE、PORT、SWING、CONFIGでは、現在変更している設定を表示します。</p>
               </section>
 
-              <section id="midi-usb" class="manual-step" data-scene="config" data-focus="midi">
-                <h3 data-en="TRS MIDI and USB-C">TRS MIDIとUSB-C</h3>
-                <p data-en="TRS MIDI and USB MIDI carry MIDI Clock and transport messages. USB-C is also used for firmware updates.">TRS MIDIとUSB MIDIは、MIDI Clockとトランスポートメッセージを扱います。USB-Cはファームウェア更新にも使います。</p>
+              <section id="encoder" class="manual-step" data-scene="home" data-focus="rotary" data-demo="tempo">
+                <h3 data-en="Dial">ダイヤル</h3>
+                <p data-en="The dial's function depends on the displayed screen. On PORT, turning while pressed selects Clock Out A-D.">ダイヤルの機能は、表示中の画面によって変わります。PORTでは、押しながら回すとClock Out A〜Dを選択します。</p>
+              </section>
+
+              <section id="transport" class="manual-step" data-scene="home" data-focus="transport">
+                <h3 data-en="Control Buttons: PLAY / STOP / TAP">コントロールボタン：PLAY／STOP／TAP</h3>
+                <div class="control-block-grid">
+                  <section class="control-block">
+                    <h4>PLAY</h4>
+                    <p data-en="Starts the Internal Clock or arms the selected external source.">内部クロックを開始するか、選択した外部ソースの待機状態にします。</p>
+                  </section>
+                  <section class="control-block">
+                    <h4>STOP</h4>
+                    <p data-en="Stops transport and returns the outputs to idle.">トランスポートを停止し、出力をアイドル状態へ戻します。</p>
+                  </section>
+                  <section class="control-block">
+                    <h4>TAP</h4>
+                    <p data-en="Sets the Internal Clock tempo by tapping at a steady interval.">一定の間隔で押して内部テンポを設定します。</p>
+                  </section>
+                </div>
               </section>
             </div>
           </section>
@@ -210,13 +298,49 @@
         <section class="chapter" aria-labelledby="operation-title">
           <h2 id="operation-title" data-en="Basic Operation">基本操作</h2>
 
+          <section class="manual-step" data-scene="home" data-focus="rotary">
+            <h3 data-en="Dial Functions by Screen">画面ごとのダイヤル操作</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th data-en="Screen">画面</th>
+                    <th data-en="Turn">回転</th>
+                    <th data-en="Press">押す</th>
+                    <th data-en="Turn While Pressed">押しながら回転</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>HOME</td>
+                    <td data-en="Change BPM in 1 BPM steps">BPMを1単位で変更</td>
+                    <td data-en="Open SWING">SWINGを開く</td>
+                    <td data-en="Fine-adjust BPM in 0.1 BPM steps">BPMを0.1単位で微調整</td>
+                  </tr>
+                  <tr>
+                    <td>PORT</td>
+                    <td data-en="Change output function">出力内容を変更</td>
+                    <td data-en="Invert polarity">極性を反転</td>
+                    <td data-en="Select Clock Out A-D">Clock Out A〜Dを選択</td>
+                  </tr>
+                  <tr>
+                    <td>SOURCE</td>
+                    <td data-en="Select source">ソースを選択</td>
+                    <td data-en="Confirm and return to HOME">決定してHOMEへ戻る</td>
+                    <td data-en="Select source, same as turning">ソースを選択（通常の回転と同じ）</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
           <section id="ui-home" class="manual-step" data-scene="home" data-focus="oled">
             <h3 data-en="HOME and SWING">HOMEとSWING</h3>
             <ul>
-              <li data-en="Turn the encoder on HOME to change BPM while SOURCE is INTERNAL.">SOURCEがINTERNALのとき、HOMEでエンコーダを回すとBPMを変更します。</li>
-              <li data-en="Press the encoder to open SWING, then turn it to set 50-75%.">エンコーダを押してSWINGを開き、回して50〜75%に設定します。</li>
-              <li data-en="50% is straight timing. Swing applies only to the Internal Clock.">50%はストレートです。Swingは内部クロックにだけ適用されます。</li>
-              <li data-en="Press the encoder again to return to HOME.">もう一度エンコーダを押すとHOMEへ戻ります。</li>
+              <li data-en="Turn the dial on HOME to change BPM while SOURCE is INTERNAL.">SOURCEがINTERNALのとき、HOMEでダイヤルを回すとBPMを変更します。</li>
+              <li data-en="Press the dial to open SWING, then turn it to set 50-75%.">ダイヤルを押してSWINGを開き、回して50〜75%に設定します。</li>
+              <li data-en="50% is straight timing. SWING applies only to the Internal Clock.">50%はストレートです。SWINGは内部クロックにだけ適用されます。</li>
+              <li data-en="Press the dial again to return to HOME.">もう一度ダイヤルを押すとHOMEへ戻ります。</li>
             </ul>
           </section>
         </section>
@@ -226,53 +350,38 @@
 
           <section id="source-internal" class="manual-step" data-scene="source" data-focus="menu">
             <h3 data-en="Select a Source">ソースを選ぶ</h3>
-            <p data-en="Press SOURCE, turn the encoder to choose a source, then press SOURCE again to confirm. Changing the source stops transport.">SOURCEを押し、エンコーダでソースを選び、もう一度SOURCEを押して確定します。ソースを切り替えるとトランスポートは停止します。</p>
+            <p data-en="Press SOURCE, turn the dial to choose a source, then press SOURCE again to confirm. Changing the source stops transport.">SOURCEを押し、ダイヤルでソースを選び、もう一度SOURCEを押して確定します。ソースを切り替えるとトランスポートは停止します。</p>
             <div class="table-wrap">
               <table>
                 <thead><tr><th data-en="Display">表示</th><th data-en="Operation">動作</th></tr></thead>
                 <tbody>
                   <tr><td>INTERNAL</td><td data-en="Runs from Clockworker's own BPM">Clockworker自身のBPMで動作</td></tr>
-                  <tr><td>EXTERNAL</td><td data-en="Follows analog Clock In">アナログClock Inへ同期</td></tr>
-                  <tr><td>USB MIDI</td><td data-en="Follows USB MIDI Clock">USB MIDI Clockへ同期</td></tr>
+                  <tr><td>EXT CLOCK</td><td data-en="Follows analog Clock In">アナログClock Inへ同期</td></tr>
                   <tr><td>TRS MIDI</td><td data-en="Follows TRS MIDI Clock">TRS MIDI Clockへ同期</td></tr>
+                  <tr><td>USB MIDI</td><td data-en="Follows USB MIDI Clock">USB MIDI Clockへ同期</td></tr>
                 </tbody>
               </table>
             </div>
-            <p class="note" data-en="After STOP, an external clock does not restart Clockworker by itself. Press START to arm the selected external source again.">STOP後は、外部クロックだけでは再開しません。もう一度STARTを押して、選択した外部ソースの待機状態にしてください。</p>
+            <p class="note" data-en="After STOP, an external clock does not restart Clockworker by itself. Press PLAY to arm the selected external source again.">STOP後は、外部クロックだけでは再開しません。もう一度PLAYを押して、選択した外部ソースの待機状態にしてください。</p>
           </section>
         </section>
 
         <section class="chapter" aria-labelledby="outputs-title">
-          <h2 id="outputs-title" data-en="Clock Outputs">クロック出力</h2>
+          <h2 id="outputs-title" data-en="Clock Outputs">クロックアウト</h2>
 
           <section id="outputs-ports" class="manual-step" data-scene="port" data-focus="clock">
             <h3 data-en="Configure Clock Out A-D">Clock Out A〜Dを設定する</h3>
-            <p data-en="Press PORT to open Port A. Press PORT again to move through B, C, and D. Turn the encoder to select a type and value; press it to toggle polarity; turn it while pressed to change pulse width.">PORTを押すとPort Aを開きます。もう一度PORTを押すたびにB、C、Dへ移動します。エンコーダを回してタイプと値を選び、押して極性を切り替え、押しながら回してパルス幅を変更します。</p>
+            <p data-en="Press PORT to open the Clock Out A settings. Press PORT again, or turn the dial while pressing it, to select A, B, C, or D. Turn the dial to select the output function, and press it to toggle RISE/FALL polarity.">PORTを押すとClock Out Aの設定を開きます。PORTをもう一度押すか、ダイヤルを押しながら回してA、B、C、Dを選択します。ダイヤルを回して出力内容を選び、押してRISE／FALL極性を切り替えます。</p>
             <div class="table-wrap">
               <table>
                 <thead><tr><th data-en="Type">タイプ</th><th data-en="Values">値</th><th data-en="Use">用途</th></tr></thead>
                 <tbody>
-                  <tr><td>ANALOG</td><td>x1 / x2 / x4</td><td data-en="Musical clock divisions">基本的なクロック分周</td></tr>
-                  <tr><td>SYNC</td><td>6 / 12 / 24 / 48 PPQN</td><td data-en="Synchronization clock">同期クロック</td></tr>
-                  <tr><td>TRANSPORT</td><td>RUN / START / STOP / RESET</td><td data-en="Transport gate or event pulse">トランスポートゲート／イベントパルス</td></tr>
+                  <tr><td>CLOCK</td><td>1 / 2 / 4 / 8 / 12 / 24 / 48 PPQN</td><td data-en="Clock pulse output">クロックパルス出力</td></tr>
+                  <tr><td>TRANSPORT</td><td>CONTINUE / RUN / PLAY / STOP</td><td data-en="Transport gate or event pulse">トランスポートゲート／イベントパルス</td></tr>
                 </tbody>
               </table>
             </div>
-            <p data-en="Pulse Width is selectable from 1, 2, 5, 10, or 15 ms. RISE is idle LOW with a HIGH pulse; FALL is the inverse.">Pulse Widthは1、2、5、10、15 msから選択できます。RISEはアイドルLOW／パルス時HIGH、FALLはその反転です。</p>
-
-            <figure class="timing-figure">
-              <svg viewBox="0 0 640 170" role="img" aria-labelledby="timing-title timing-desc">
-                <title id="timing-title">RISE and FALL pulse polarity</title>
-                <desc id="timing-desc">RISE produces a high pulse from a low idle level. FALL produces a low pulse from a high idle level.</desc>
-                <text x="8" y="44">RISE</text>
-                <polyline points="90,54 170,54 170,18 260,18 260,54 390,54 390,18 480,18 480,54 620,54" />
-                <text x="8" y="126">FALL</text>
-                <polyline points="90,96 170,96 170,132 260,132 260,96 390,96 390,132 480,132 480,96 620,96" />
-                <line x1="170" y1="78" x2="260" y2="78" class="measure-line" />
-                <text x="184" y="74" class="measure-text">Pulse Width</text>
-              </svg>
-              <figcaption data-en="Polarity changes the direction of the pulse; Pulse Width changes how long the active level lasts.">Polarityはパルスの向きを、Pulse Widthはアクティブ状態が続く長さを変更します。</figcaption>
-            </figure>
+            <p data-en="RISE is idle LOW with a HIGH pulse; FALL is the inverse.">RISEはアイドルLOW／パルス時HIGH、FALLはその反転です。</p>
           </section>
         </section>
 
@@ -300,7 +409,7 @@
         <section id="config" class="chapter" aria-labelledby="config-title">
           <h2 id="config-title">CONFIG</h2>
           <section class="manual-step" data-scene="config" data-focus="menu">
-            <p data-en="Press CONFIG to open or close settings. Turn the encoder to select an item, then press it to change the displayed value.">CONFIGを押して設定を開閉します。エンコーダを回して項目を選び、押して表示中の値を変更します。</p>
+            <p data-en="Press CONFIG to open or close settings. Turn the dial to select an item, then press it to change the displayed value.">CONFIGを押して設定を開閉します。ダイヤルを回して項目を選び、押して表示中の値を変更します。</p>
             <div class="table-wrap">
               <table>
                 <thead><tr><th data-en="Item">項目</th><th data-en="Values">値</th><th data-en="Purpose">内容</th></tr></thead>
@@ -322,7 +431,7 @@
         <section id="saving" class="chapter" aria-labelledby="saving-title">
           <h2 id="saving-title" data-en="Saving Settings">設定の保存</h2>
           <section class="manual-step" data-scene="home" data-focus="overview">
-            <p data-en="Internal BPM, Swing, SOURCE, output settings, MIDI output settings, input settings, Action In, and SLEEP are saved. To protect timing, Clockworker does not write settings while transport is running. Press STOP and wait a few seconds before switching off the case.">内部BPM、Swing、SOURCE、出力設定、MIDI出力設定、入力設定、Action In、SLEEPを保存します。タイミングを保護するため、トランスポート動作中は設定を書き込みません。STOPを押し、数秒待ってからケースの電源を切ってください。</p>
+            <p data-en="Internal BPM, SWING, SOURCE, output settings, MIDI output settings, input settings, Action In, and SLEEP are saved. To protect timing, Clockworker does not write settings while transport is running. Press STOP and wait a few seconds before switching off the case.">内部BPM、SWING、SOURCE、出力設定、MIDI出力設定、入力設定、Action In、SLEEPを保存します。タイミングを保護するため、トランスポート動作中は設定を書き込みません。STOPを押し、数秒待ってからケースの電源を切ってください。</p>
           </section>
         </section>
 
@@ -340,7 +449,7 @@
             </div>
             <ol>
               <li data-en="Stop transport and connect Clockworker to the computer with a data-capable USB-C cable.">トランスポートを停止し、データ通信対応のUSB-Cケーブルでコンピューターへ接続します。</li>
-              <li data-en="Select UPDATE in CONFIG and confirm with the encoder.">CONFIGでUPDATEを選び、エンコーダで確定します。</li>
+              <li data-en="Select UPDATE in CONFIG and confirm with the dial.">CONFIGでUPDATEを選び、ダイヤルで確定します。</li>
               <li data-en="When the UF2 drive appears, copy the correct Clockworker .uf2 file to it.">UF2ドライブが表示されたら、正しいClockworkerの.uf2ファイルをコピーします。</li>
               <li data-en="Wait for Clockworker to restart. Do not disconnect USB during the copy.">Clockworkerが再起動するまで待ちます。コピー中はUSBを抜かないでください。</li>
             </ol>
@@ -355,7 +464,7 @@
             <ul>
               <li data-en="Confirm that transport is running and the correct SOURCE is selected.">トランスポートが動作中で、正しいSOURCEが選ばれているか確認します。</li>
               <li data-en="Confirm that the selected port is ANALOG or SYNC, not TRANSPORT.">使用するポートがTRANSPORTではなく、ANALOGまたはSYNCになっているか確認します。</li>
-              <li data-en="Try RISE polarity and a 5 ms Pulse Width.">RISE極性と5 msのPulse Widthを試します。</li>
+              <li data-en="If there is no response, try the other output polarity setting.">反応しない場合は、出力極性をもう一方へ切り替えます。</li>
             </ul>
           </section>
 
@@ -396,13 +505,12 @@
                   <tr><th data-en="Display">表示</th><td>128 × 32 OLED</td></tr>
                   <tr><th data-en="Internal tempo">内部テンポ</th><td>30.0–250.0 BPM</td></tr>
                   <tr><th data-en="Internal resolution">内部分解能</th><td>96 PPQN</td></tr>
-                  <tr><th data-en="Clock sources">クロックソース</th><td>INTERNAL / EXTERNAL / USB MIDI / TRS MIDI</td></tr>
+                  <tr><th data-en="Clock sources">クロックソース</th><td>INTERNAL / EXT CLOCK / TRS MIDI / USB MIDI</td></tr>
                   <tr><th>Clock In</th><td>1 / 2 / 4 / 6 / 12 / 24 / 48 PPQN, RISE / FALL</td></tr>
-                  <tr><th>Clock Out A–D</th><td>ANALOG x1 / x2 / x4, SYNC 6 / 12 / 24 / 48 PPQN, TRANSPORT</td></tr>
-                  <tr><th data-en="Pulse Width">パルス幅</th><td>1 / 2 / 5 / 10 / 15 ms</td></tr>
+                  <tr><th>Clock Out A〜D</th><td>1 / 2 / 4 / 8 / 12 / 24 / 48 PPQN, CONTINUE / RUN / PLAY / STOP</td></tr>
                   <tr><th data-en="Output polarity">出力極性</th><td>RISE / FALL</td></tr>
                   <tr><th>MIDI Clock</th><td>24 PPQN, F8 / FA / FB / FC</td></tr>
-                  <tr><th data-en="MIDI connections">MIDI接続</th><td>USB MIDI / TRS MIDI IN / OUT</td></tr>
+                  <tr><th data-en="MIDI connections">MIDI接続</th><td>USB MIDI／TRS MIDI IN／OUT</td></tr>
                 </tbody>
               </table>
             </div>
@@ -424,12 +532,12 @@
 
           <section class="manual-step" data-scene="home" data-focus="overview">
             <h3 data-en="Does external Clock In start automatically?">Clock Inだけで自動開始しますか</h3>
-            <p data-en="Not after STOP. Press START to arm the external source before sending clock pulses.">STOP後は自動開始しません。STARTを押して外部ソースを待機状態にしてから、クロックパルスを入力してください。</p>
+            <p data-en="Not after STOP. Press PLAY to arm the external source before sending clock pulses.">STOP後は自動開始しません。PLAYを押して外部ソースを待機状態にしてから、クロックパルスを入力してください。</p>
           </section>
 
           <section class="manual-step" data-scene="home" data-focus="overview">
-            <h3 data-en="Does Swing affect external sync?">Swingは外部同期にも効きますか</h3>
-            <p data-en="No. Swing applies only to the Internal Clock. External sync follows the external source's timing.">効きません。Swingは内部クロックにだけ適用され、外部同期では外部ソースのタイミングに従います。</p>
+            <h3 data-en="Does SWING affect external sync?">SWINGは外部同期にも効きますか</h3>
+            <p data-en="No. SWING applies only to the Internal Clock. External sync follows the external source's timing.">効きません。SWINGは内部クロックにだけ適用され、外部同期では外部ソースのタイミングに従います。</p>
           </section>
         </section>
 
@@ -441,6 +549,6 @@
       </article>
     </main>
 
-    <script src="app.js?v=20260716d"></script>
+    <script src="app.js?v=20260716p"></script>
   </body>
 </html>
